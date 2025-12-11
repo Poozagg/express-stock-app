@@ -1,0 +1,102 @@
+html
+  head
+    link(rel='stylesheet', href='/styles.css')
+    title Stock Control System
+    link(rel='stylesheet', href='/styles.css')
+  body
+    h1 Stock Inventory
+
+    //- Search form
+    form(action="/search" method="get")
+      input(type="text" name="query" placeholder="Search products" value=searchQuery)
+      button(type="submit") Search
+
+    //- Sort options
+    form(action="/sort" method="get")
+      select(name="sortBy" onchange="this.form.submit()")
+        option(value="name" selected=sortBy === 'name') Sort by Name
+        option(value="price" selected=sortBy === 'price') Sort by Price
+      
+    //- Add new product form
+    form(action="/create" method="post")
+      label(for="id") ID:
+      input(type="text" id="id" name="id" required)
+      br
+      label(for="name") Name:
+      input(type="text" id="name" name="name" required)
+      br
+      label(for="price") Price:
+      input(type="number" id="price" name="price" step="0.01" required)
+      br
+      label(for="quantity") Quantity:
+      input(type="number" id="quantity" name="quantity" required)
+      br
+      label(for="type") Type:
+      select(id="type" name="type" required)
+        option(value="") Select a type
+        option(value="clothing") Clothing
+        option(value="electronics") Electronics
+      br
+      //- Conditional fields for clothing and electronics
+      div(id="clothingFields" style="display: none;")
+        label(for="size") Size:
+        input(type="text" id="size" name="size")
+        br
+        label(for="material") Material:
+        input(type="text" id="material" name="material")
+      div(id="electronicsFields" style="display: none;")
+        label(for="brand") Brand:
+        input(type="text" id="brand" name="brand")
+        br
+        label(for="warranty") Warranty:
+        input(type="text" id="warranty" name="warranty")
+      br
+      button(type="submit") Add Product
+
+    //- Display products
+    table
+      thead
+        tr
+          th ID
+          th Name
+          th Price
+          th Quantity
+          th Type
+          th Actions
+      tbody
+        each product in products
+          tr
+            td= product.id
+            td= product.name
+            td= product.price
+            td= product.quantity
+            td= product.type 
+            td
+              a(href=`/details/${product.id}`) View Details
+              form(action=`/delete/${product.id}` method="post" style="display:inline;")
+                input(type="hidden" name="_method" value="DELETE")
+                button(type="submit") Delete
+
+    //- JavaScript for conditional fields
+    script.
+      const typeSelect = document.getElementById('type');
+      const clothingFields = document.getElementById('clothingFields');
+      const electronicsFields = document.getElementById('electronicsFields');
+
+      function updateFields() {
+        if (typeSelect.value === 'clothing') {
+          clothingFields.style.display = 'block';
+          electronicsFields.style.display = 'none';
+        } else if (typeSelect.value === 'electronics') {
+          clothingFields.style.display = 'none';
+          electronicsFields.style.display = 'block';
+        } else {
+          clothingFields.style.display = 'none';
+          electronicsFields.style.display = 'none';
+        }
+      }
+
+      typeSelect.addEventListener('change', updateFields);
+      
+      // Initialize fields on page load
+      updateFields();
