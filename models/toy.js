@@ -1,20 +1,20 @@
-// TODO: Implement the Toys model
+// TODO: Implement the Toy model
 // Expected fields:
 // - ageGroup: String
 // - material: String
 // - batteryOperated: Boolean
 
 module.exports = (sequelize, DataTypes) => {
-    const Toys = sequelize.define('Toys', {
+    const Toy = sequelize.define('Toy', {
       // TODO: Define fields here
     });
   
-    Toys.associate = (models) => {
+    Toy.associate = (models) => {
       // TODO: Define associations here
-      // Toys.belongsTo(models.Product);
+      // Toy.belongsTo(models.Product);
     };
   
-    return Toys;
+    return Toy;
   };
   
   

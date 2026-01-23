@@ -1,18 +1,18 @@
 const db = require('../models');
 const Product = db.Product;
 const Clothing = db.Clothing;
-const Electronics = db.Electronics;
+const Electronic = db.Electronic;
 const { Op } = require('sequelize');
 const axios = require('axios');
 
 exports.index = async (req, res) => {
   try {
     // Fetch all products from the database
-    // The `include` option performs an INNER JOIN with the Clothing and Electronics tables
+    // The `include` option performs an INNER JOIN with the Clothing and Electronic tables
     const products = await Product.findAll({
       include: [
         { model: Clothing, required: false },
-        { model: Electronics, required: false }
+        { model: Electronic, required: false }
       ]
     });
     // Render the index view with the fetched products
@@ -33,11 +33,11 @@ exports.create = async (req, res) => {
       id, name, price, quantity, type
     });
 
-    // Based on the product type, create associated Clothing or Electronics record
+    // Based on the product type, create associated Clothing or Electronic record
     if (type === 'clothing') {
       await Clothing.create({ ProductId: product.id, size, material });
     } else if (type === 'electronics') {
-      await Electronics.create({ ProductId: product.id, brand, warranty });
+      await Electronic.create({ ProductId: product.id, brand, warranty });
     } else {
       return res.status(400).send("Invalid product type.");
     }
@@ -64,7 +64,7 @@ exports.getDetails = async (req, res) => {
     const product = await Product.findByPk(id, {
       include: [
         { model: Clothing, required: false },
-        { model: Electronics, required: false }
+        { model: Electronic, required: false }
       ]
     });
 
@@ -90,7 +90,7 @@ exports.search = async (req, res) => {
       },
       include: [
         { model: Clothing, required: false },
-        { model: Electronics, required: false }
+        { model: Electronic, required: false }
       ]
     });
     res.render('index', { products, searchQuery: query });
@@ -106,7 +106,7 @@ exports.sort = async (req, res) => {
     const products = await Product.findAll({
       include: [
         { model: Clothing, required: false },
-        { model: Electronics, required: false }
+        { model: Electronic, required: false }
       ],
       order: [['name', 'ASC']]
     });
@@ -125,7 +125,7 @@ exports.convertCurrency = async (req, res) => {
     const product = await Product.findByPk(id, {
       include: [
         { model: Clothing, required: false },
-        { model: Electronics, required: false }
+        { model: Electronic, required: false }
       ]
     });
 

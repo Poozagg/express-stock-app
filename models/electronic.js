@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Electronics = sequelize.define('Electronics', {
+    const Electronic = sequelize.define('Electronic', {
       brand: {
         type: DataTypes.STRING
       },
@@ -8,10 +8,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
   
-    Electronics.associate = (models) => {
-      Electronics.belongsTo(models.Product);
+    Electronic.associate = (models) => {
+      Electronic.belongsTo(models.Product);
     };
   
-    return Electronics;
+    return Electronic;
   };
   

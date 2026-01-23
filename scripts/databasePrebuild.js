@@ -1,5 +1,5 @@
 const db = require('../models');
-const { Product, Clothing, Electronics } = db;
+const { Product, Clothing, Electronic } = db;
 
 async function prebuildDatabase() {
   try {
@@ -23,7 +23,7 @@ async function prebuildDatabase() {
     ]);
 
     // Create sample electronics items
-    await Electronics.bulkCreate([
+    await Electronic.bulkCreate([
       { ProductId: 'ELE001', brand: 'TechGiant', warranty: '1 year', model: 'X2000', powerConsumption: 5, dimensions: '150x75x8mm' },
       { ProductId: 'ELE002', brand: 'LaptopPro', warranty: '2 years', model: 'UltraBook', powerConsumption: 45, dimensions: '350x240x18mm' },
     ]);
