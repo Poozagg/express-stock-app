@@ -36,7 +36,7 @@ exports.create = async (req, res) => {
     // Based on the product type, create associated Clothing or Electronic record
     if (type === 'clothing') {
       await Clothing.create({ ProductId: product.id, size, material });
-    } else if (type === 'electronics') {
+    } else if (type === 'electronic') {
       await Electronic.create({ ProductId: product.id, brand, warranty });
     } else {
       return res.status(400).send("Invalid product type.");
