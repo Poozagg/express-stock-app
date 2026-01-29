@@ -55,17 +55,17 @@ Run 'npm test' in your terminal.
 - ProductId: String (Foreign Key)
 - size: String
 - material: String
-- color: String
-- brand: String
-- gender: String
+- color: String (New)
+- brand: String (New)
+- gender: String (New)
 
 ### Electronics
 - ProductId: String (Foreign Key)
 - brand: String
 - warranty: String
-- model: String
-- powerConsumption: Float
-- dimensions: String
+- model: String (New)
+- powerConsumption: Float (New)
+- dimensions: String (New)
 
 ### Books (New)
 - ProductId: String (Foreign Key)
