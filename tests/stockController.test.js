@@ -53,7 +53,7 @@ describe('Stock Controller', () => {
         name: 'Integration Test Product',
         price: 19.99,
         quantity: 50,
-        type: 'electronics'
+        type: 'electronic'
       };
 
       await request(app)
