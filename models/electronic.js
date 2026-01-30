@@ -5,16 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     warranty: {
       type: DataTypes.STRING,
-    },
-    model: {
-      type: DataTypes.STRING,
-    },
-    powerConsumption: {
-      type: DataTypes.FLOAT,
-    },
-    dimensions: {
-      type: DataTypes.STRING,
-    },
+    }
   });
 
   Electronic.associate = (models) => {
