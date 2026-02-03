@@ -1,3 +1,5 @@
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/v9jD_OVc)
+[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=22025683)
 # Supermarket Stock Management System
 
 ## Project Overview
@@ -53,17 +55,17 @@ Run 'npm test' in your terminal.
 - ProductId: String (Foreign Key)
 - size: String
 - material: String
-- color: String
-- brand: String
-- gender: String
+- color: String (New)
+- brand: String (New)
+- gender: String (New)
 
 ### Electronics
 - ProductId: String (Foreign Key)
 - brand: String
 - warranty: String
-- model: String
-- powerConsumption: Float
-- dimensions: String
+- model: String (New)
+- powerConsumption: Float (New)
+- dimensions: String (New)
 
 ### Books (New)
 - ProductId: String (Foreign Key)

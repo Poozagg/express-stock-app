@@ -1,6 +1,5 @@
 html
-  head
-    link(rel='stylesheet', href='/styles.css')
+  head    
     title Stock Control System
     link(rel='stylesheet', href='/styles.css')
   body
@@ -35,7 +34,7 @@ html
       select(id="type" name="type" required)
         option(value="") Select a type
         option(value="clothing") Clothing
-        option(value="electronics") Electronics
+        option(value="electronic") Electronic
       br
       //- Conditional fields for clothing and electronics
       div(id="clothingFields" style="display: none;")
@@ -87,7 +86,7 @@ html
         if (typeSelect.value === 'clothing') {
           clothingFields.style.display = 'block';
           electronicsFields.style.display = 'none';
-        } else if (typeSelect.value === 'electronics') {
+        } else if (typeSelect.value === 'electronic') {
           clothingFields.style.display = 'none';
           electronicsFields.style.display = 'block';
         } else {
