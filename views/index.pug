@@ -43,7 +43,7 @@ html
         br
         label(for="material") Material:
         input(type="text" id="material" name="material")
-      div(id="electronicsFields" style="display: none;")
+      div(id="electronicFields" style="display: none;")
         label(for="brand") Brand:
         input(type="text" id="brand" name="brand")
         br
@@ -80,7 +80,7 @@ html
     script.
       const typeSelect = document.getElementById('type');
       const clothingFields = document.getElementById('clothingFields');
-      const electronicsFields = document.getElementById('electronicsFields');
+      const electronicFields = document.getElementById('electronicFields');
 
       function updateFields() {
         if (typeSelect.value === 'clothing') {
@@ -88,10 +88,10 @@ html
           electronicsFields.style.display = 'none';
         } else if (typeSelect.value === 'electronic') {
           clothingFields.style.display = 'none';
-          electronicsFields.style.display = 'block';
+          electronicFields.style.display = 'block';
         } else {
           clothingFields.style.display = 'none';
-          electronicsFields.style.display = 'none';
+          electronicFields.style.display = 'none';
         }
       }
 
