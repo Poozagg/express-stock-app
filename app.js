@@ -6,6 +6,8 @@ const productRoutes = require('./routes/productRoutes');
 app.set('view engine', 'pug');
 app.set('views', './views');
 app.use(express.static('./public'));
+app.use(express.urlencoded({ extended: true })); // newly added 
+app.use(express.json()); // newly added
 
 // Use product routes
 app.use('/', productRoutes);

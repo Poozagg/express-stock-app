@@ -56,3 +56,22 @@ exports.sort = async (req, res) => {
     res.status(500).send("Error sorting products.");
   }
 };
+
+exports.create = async (req, res) => {
+  try {
+    // Destructure the request body to get product details
+    console.log(req.body);
+    const { id, name, price, quantity, type } = req.body;
+
+    // Create a new product in the database
+    const product = await Product.create({
+      id, name, price, quantity, type
+    });   
+
+    // Redirect to the home page after successful creation
+    res.redirect('/');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error creating product.");
+  }
+};
