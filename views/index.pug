@@ -1,6 +1,41 @@
 html
-    head
+    head    
         title Stock Control System
-        link(rel='stylesheet', href='/styles.css')
+        link(rel='stylesheet' href='../public/style.css')
     body
         h1 Stock Inventory
+
+    //- Search form
+    form(action="/search" method="get")
+      input(type="text" name="query" placeholder="Search products" value=searchQuery)
+      button(type="submit") Search
+
+    //- Sort options
+    form(action="/sort" method="get")
+      select(name="sortBy" onchange="this.form.submit()")
+        option(value="name" selected=sortBy === 'name') Sort by Name
+        option(value="price" selected=sortBy === 'price') Sort by Price
+
+    //- Display products
+    table
+      thead
+        tr
+          th ID
+          th Name
+          th Price
+          th Quantity
+          th Type
+          th Actions
+      tbody
+        each product in products
+          tr
+            td= product.id
+            td= product.name
+            td= product.price
+            td= product.quantity
+            td= product.type 
+            td
+              a(href=`/details/${product.id}`) View Details
+              form(action=`/delete/${product.id}` method="post" style="display:inline;")
+                input(type="hidden" name="_method" value="DELETE")
+                button(type="submit") Delete

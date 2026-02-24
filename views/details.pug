@@ -1,0 +1,16 @@
+html
+  head
+    title Product Details
+    link(rel='stylesheet', href='/styles.css')
+  body
+    h1 Product Details
+
+    //- Display product information
+    p ID: #{product.id}
+    p Name: #{product.name}
+    p Price: #{product.price} GBP
+    p Quantity: #{product.quantity}
+    p Type: #{product.type}
+
+    //- Link back to the inventory list
+    a(href="/") Back to Inventory
