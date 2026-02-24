@@ -1,4 +1,17 @@
+:root {
+  --bg-color: #F9FAFB;
+  --card-bg: #FFFFFF;
+  --primary: #0d9488;
+  --secondary: #c7a8e3;
+  --text-main: #1F2937;
+  --text-muted: #8dbc57;
+  --success: #10B981; /* Green for PASS */
+  --danger: #EF4444;  /* Red for FAIL */
+}
+
 body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
     font-family: sans-serif;
     margin: 20px;
   }
@@ -15,7 +28,8 @@ body {
   }
   
   th {
-    background-color: #f0f0f5;
+    background-color: var(--primary);
+    color: white;
   }
   
   form {
@@ -33,5 +47,103 @@ body {
     border: 1px solid #ddd;
     box-sizing: border-box;
   }
-  
+
+  .navbar-custom {
+    background-color: var(--primary);
+    font: bold 16px sans-serif;
+    color: white;
+    padding: 10px 20px;
+    margin: -20px -20px 20px -20px; /* Extend navbar to edges */
+  }
+
+  .navbar-custom .container-fluid {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-left,
+  .nav-center,
+  .nav-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-left {
+    justify-content: flex-start;
+  }
+
+  .nav-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .nav-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .nav-link {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .nav-link:hover {
+    color: var(--text-muted);
+    text-shadow: 0 0 8px var(--secondary);
+  }
+
+  .navbar-brand {
+    font-size: 24px;
+    color: white;
+    text-decoration: none;
+  }
+
+  /* search bar in nav bar  */
+  .search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .search-icon-left {
+    position: absolute;
+    left: 12px;
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+  .search-input {
+    padding: 10px 45px 10px 40px;  /* space for icons on both sides */
+    border: 2px solid white;
+    border-radius: 25px;
+    background: rgba(255, 255, 255);
+    color: white;
+    width: 220px;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+  .search-btn {
+    position: absolute;
+    right: 5px;
+    background: var(--secondary);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+  .search-btn:hover {
+    background: var(--secondary-dark);
+    transform: scale(1.1);
+  }
   

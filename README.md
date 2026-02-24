@@ -10,27 +10,27 @@ This project is a stock management system for a supermarket, built with Node.js,
    Use the git clone command followed by the repository URL. Then change into the project directory.
 
 2. Install dependencies:
-   Run 'npm install' in your terminal to install all necessary dependencies.
+   Run `npm install` in your terminal to install all necessary dependencies.
 
 3. Set up the database:
    - Ensure SQLite is installed on your system
-   - To create a prebuilt database with sample data, run: 'npm run database:prebuild'
-   - To clear the database, run: 'npm run database:clear'
+   - To create a prebuilt database with sample data, run: `npm run database:prebuild`
+   - To clear the database, run: `npm run database:clear`
    - Alternatively, the database will be automatically created with no data when you start the application for the first time
 
 4. Start the development server:
-   Run 'npm run dev' in your terminal to start the server.
+   Run `npm run dev` in your terminal to start the server.
 
-5. Open your web browser and navigate to 'http://localhost:3000' to access the application
+5. Open your web browser and navigate to `http://localhost:3000` to access the application
 
 ## Database Management
 The project includes scripts to manage the database:
 
 1. To create a prebuilt database with sample data:
-   Run 'npm run database:prebuild' in your terminal. This will create a SQLite database file with sample products, including both clothing and electronics items.
+   Run `npm run database:prebuild` in your terminal. This will create a SQLite database file with sample products, including both clothing and electronics items.
 
 2. To clear the database (delete the database file):
-   Run 'npm run database:clear' in your terminal. This will remove the existing database file, allowing you to start fresh.
+   Run `npm run database:clear` in your terminal. This will remove the existing database file, allowing you to start fresh.
 
 The sample data includes:
 - Two clothing items (T-Shirt and Jeans)
@@ -40,7 +40,7 @@ Each item has associated details in their respective category tables (Clothing o
 
 ## Running Tests
 To run the test suite:
-Run 'npm test' in your terminal.
+Run `npm test` in your terminal.
 
 ## Database Schema
 

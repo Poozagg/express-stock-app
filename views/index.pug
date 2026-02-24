@@ -1,14 +1,32 @@
 html
   head    
     title Stock Control System
+    //- Bootstrap CSS
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css')
+    //- Bootstrap Icons
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css')
     link(rel='stylesheet', href='/styles.css')
   body
-    h1 Stock Inventory
+    nav(class="navbar navbar-expand-lg navbar-custom")
+      .container-fluid
+        .nav-left
+          a(class="navbar-brand" href="#") Stock Inventory
+        
+        .nav-center
+          a(class="nav-link active" aria-current="page" href="#") Home
+          a(class="nav-link" href="#") Add Product
+          a(class="nav-link" href="#") Summary
+          a(class="nav-link" href="#") About Us 
 
-    //- Search form
-    form(action="/search" method="get")
-      input(type="text" name="query" placeholder="Search products" value=searchQuery)
-      button(type="submit") Search
+        .nav-right
+          form(class="search-form" action="/search" method="get")
+            .search-wrapper
+              i(class="bi bi-search search-icon-left")
+              input(class="search-input" type="search" name="query" placeholder="Search Products...")
+              button(class="search-btn" type="submit")
+                i(class="bi bi-arrow-right")
+
+    
 
     //- Sort options
     form(action="/sort" method="get")
