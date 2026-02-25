@@ -12,5 +12,13 @@ html
     p Quantity: #{product.quantity}
     p Type: #{product.type}
 
+    //- Display additional details based on product type e.g. cclothing or electronic
+    if product.type === 'clothing' && product.Clothing
+      p Size: #{product.Clothing.size}
+      p Material: #{product.Clothing.material}
+    else if product.type === 'electronic' && product.Electronic
+      p Brand: #{product.Electronic.brand}
+      p Warranty: #{product.Electronic.warranty}
+
     //- Link back to the inventory list
     a(href="/") Back to Inventory

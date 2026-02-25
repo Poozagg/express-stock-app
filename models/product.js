@@ -21,6 +21,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       }
     });  
-     
+    
+    //new attribute called associate to define relationships between tables
+    Product.associate = (models) => {
+      Product.hasOne(models.Clothing);
+      Product.hasOne(models.Electronic);
+    };
+
     return Product;
   };

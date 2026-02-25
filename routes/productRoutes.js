@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const stockController = require("../controllers/stockController.js");
+const stockController = require("../controllers/stockController");
 
 router.get("/", stockController.index);
-router.get("/details/:id", stockController.getDetails); // domain.com/details/3
+
+router.get("/details/:id", stockController.getDetails);
 
 // GET search products
 router.get('/search', stockController.search);
