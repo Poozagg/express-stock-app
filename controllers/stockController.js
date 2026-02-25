@@ -3,6 +3,7 @@ const Product = db.Product;
 const Clothing = db.Clothing;
 const Electronic = db.Electronic;
 const { Op } = require("sequelize");
+const axios = require("axios");
 
 exports.index = async (req, res) => {
   try {
@@ -69,12 +70,32 @@ exports.create = async (req, res) => {
   try {
     // Destructure the request body to get product details
     console.log(req.body);
-    const { id, name, price, quantity, type } = req.body;
+    const { id, name, price, quantity, type, size, material, brand, warranty } = req.body;
 
     // Create a new product in the database
     const product = await Product.create({
-      id, name, price, quantity, type
+      id, 
+      name, 
+      price, 
+      quantity, 
+      type
     });   
+
+    if (type === "clothing") {
+      await Clothing.create({
+        productId: product.id, // Associate with the created product
+        size,
+        material,
+      });
+    } else if (type === "electronic") {
+      await Electronic.create({
+        productId: product.id, // Associate with the created product
+        brand,
+        warranty,
+      });
+    } else {
+      return res.status(400).send("Invalid product type.");
+    }
 
     // Redirect to the home page after successful creation
     res.redirect('/');
@@ -84,3 +105,39 @@ exports.create = async (req, res) => {
   }
 };
 
+exports.convertCurrency = async (req, res) => {
+  const { id } = req.params; 
+  const targetCurrency = req.query.currency || 'USD'; // Updated to use query parameter or default to USD
+
+  try {
+    const product = await Product.findByPk(id, {
+      include: [
+        { model: Clothing, required: false },
+        { model: Electronic, required: false }
+      ]
+    });
+
+    if (!product) {
+      return res.status(404).send("Product not found.");
+    }
+
+    const response = await axios.get(`https://api.exchangerate-api.com/v4/latest/GBP`);
+
+    const exchangeRate = response.data.rates[targetCurrency];
+    
+    const convertedPrice = targetCurrency === 'GBP' 
+     ? product.price 
+     : (product.price * exchangeRate).toFixed(2);
+
+    res.render('details', { 
+      product: product, 
+      convertedPrice: convertedPrice, 
+      targetCurrency: targetCurrency,
+      originalCurrency: 'GBP'
+    });
+
+  } catch (error) {
+    console.error('Error fetching exchange rates or product:', error);
+    res.status(500).send("Error converting currency.");
+  }
+};
