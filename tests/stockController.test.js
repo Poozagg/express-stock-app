@@ -50,3 +50,32 @@ afterAll(async () => {
   // Close the database connection
   await db.sequelize.close();
 });
+
+// Integration Tests
+  describe('Integration Tests', () => {
+    test('Create a product and retrieve it', async () => {
+      // Using supertest to simulate HTTP requests
+      // This tests the entire request-response cycle, including routing
+      const newProduct = {
+        id: 'INT001',
+        name: 'Integration Test Product',
+        price: 19.99,
+        quantity: 50,
+        type: 'electronic'
+      };
+
+      await request(app)
+        .post('/create')
+        .send(newProduct)
+        .expect(302); // Expecting a redirect status code
+
+      const response = await request(app)
+        .get('/')
+        .expect(200);
+
+      // Checking the response body for the created product
+      expect(response.text).toContain('Integration Test Product');
+    });
+
+    // More integration tests...
+  });
