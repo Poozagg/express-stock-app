@@ -1,5 +1,13 @@
 const stockController = require('../controllers/stockController');
 const db = require('../models');
+const request = require('supertest');
+const app = require('../app'); // Assuming your Express app is exported from app.js
+
+// Jest hook to run before all tests
+beforeAll(async () => {
+  // Sync the database and force true to drop existing tables
+  await db.sequelize.sync({ force: true });
+});
 
 describe('Stock Controller', () => {
   // Unit Tests
@@ -36,3 +44,9 @@ describe('Stock Controller', () => {
   });
 
 })
+
+// Jest hook to run after all tests
+afterAll(async () => {
+  // Close the database connection
+  await db.sequelize.close();
+});
