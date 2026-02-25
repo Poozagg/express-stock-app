@@ -1,0 +1,30 @@
+:root {
+    --bg-color: #F9FAFB;
+    --card-bg: #FFFFFF;
+    --primary: #0d9488;
+    --secondary: #c7a8e3;
+    --text-main: #1F2937;
+    --text-muted: #8dbc57;
+    --success: #10B981; /* Green for PASS */
+    --danger: #EF4444;  /* Red for FAIL */
+  }
+
+  html {
+      height: 100%;
+    }
+  
+  body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: sans-serif;
+      margin: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+  .content {
+    flex: 1;  /* This pushes footer to bottom */
+    padding: 20px;
+  }
+    

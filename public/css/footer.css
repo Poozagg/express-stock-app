@@ -1,0 +1,13 @@
+.footer {
+    background-color: rgba(13, 148, 136, 0.5);  /* 50% transparent teal */
+    color: white;
+    text-align: center;
+    padding: 15px 20px;
+    width: 100%;
+    /* NO position: fixed */
+  }
+  .footer p {
+    margin: 0;
+    font-size: 14px;
+  }
+  
