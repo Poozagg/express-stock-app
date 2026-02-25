@@ -11,7 +11,7 @@ const db = {};
 
 // passing details/key-value pairs into the empty db object
 db.sequelize = sequelize; //configuration
-db.Sequelize = Sequelize; //Sequelize class, using global blueprint
+// db.Sequelize = Sequelize; //Sequelize class, using global blueprint
 
 //creating product table and passing sequelize and DataTypes to it
 db.Product = require("./product.js")(sequelize, DataTypes); 
