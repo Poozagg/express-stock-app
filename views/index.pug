@@ -7,42 +7,6 @@ block content
         option(value="name" selected=sortBy === 'name') Sort by Name
         option(value="price" selected=sortBy === 'price') Sort by Price
       
-    //- Add new product form
-    form(action="/create" method="post")
-      label(for="id") ID:
-      input(type="text" id="id" name="id" required)
-      br
-      label(for="name") Name:
-      input(type="text" id="name" name="name" required)
-      br
-      label(for="price") Price:
-      input(type="number" id="price" name="price" step="0.01" required)
-      br
-      label(for="quantity") Quantity:
-      input(type="number" id="quantity" name="quantity" required)
-      br
-      label(for="type") Type:
-      select(id="type" name="type" required)
-        option(value="") Select a type
-        option(value="clothing") Clothing
-        option(value="electronic") Electronic
-      br
-      //- Conditional fields for clothing and electronics
-      div(id="clothingFields" style="display: none;")
-        label(for="size") Size:
-        input(type="text" id="size" name="size")
-        br
-        label(for="material") Material:
-        input(type="text" id="material" name="material")
-      div(id="electronicFields" style="display: none;")
-        label(for="brand") Brand:
-        input(type="text" id="brand" name="brand")
-        br
-        label(for="warranty") Warranty:
-        input(type="text" id="warranty" name="warranty")
-      br
-      button(type="submit") Add Product
-
     //- Display products
     table
       thead
@@ -66,27 +30,3 @@ block content
               form(action=`/delete/${product.id}` method="post" style="display:inline;")
                 input(type="hidden" name="_method" value="DELETE")
                 button(type="submit") Delete
-
-    //- JavaScript for conditional fields
-    script.
-      const typeSelect = document.getElementById('type');
-      const clothingFields = document.getElementById('clothingFields');
-      const electronicFields = document.getElementById('electronicFields');
-
-      function updateFields() {
-        if (typeSelect.value === 'clothing') {
-          clothingFields.style.display = 'block';
-          electronicFields.style.display = 'none';
-        } else if (typeSelect.value === 'electronic') {
-          clothingFields.style.display = 'none';
-          electronicFields.style.display = 'block';
-        } else {
-          clothingFields.style.display = 'none';
-          electronicFields.style.display = 'none';
-        }
-      }
-
-      typeSelect.addEventListener('change', updateFields);
-      
-      // Initialize fields on page load
-      updateFields();

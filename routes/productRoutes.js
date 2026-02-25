@@ -5,6 +5,9 @@ const stockController = require('../controllers/stockController');
 // GET all products
 router.get('/', stockController.index);
 
+// GET create a new product page
+router.get('/createPage', stockController.createPage);
+
 // POST create a new product
 router.post('/create', stockController.create);
 

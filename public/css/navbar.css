@@ -45,12 +45,17 @@
   }
 
   .nav-link:hover {
-    color: var(--text-muted);
-    text-shadow: 0 0 8px var(--secondary);
+    color: white;
+    text-shadow: 0 0 20px var(--text-muted);
   }
 
   .navbar-brand {
     font-size: 24px;
     color: white;
     text-decoration: none;
+  }
+
+  .navbar-brand:hover {
+    color: white;
+    text-shadow: 0 0 20px var(--text-muted);
   }

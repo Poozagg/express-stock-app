@@ -23,6 +23,11 @@ exports.index = async (req, res) => {
   }
 };
 
+exports.createPage = (req, res) => {
+  // Render the add product form
+  res.render('createPage');
+};
+
 exports.create = async (req, res) => {
   try {
     // Destructure the request body to get product details
