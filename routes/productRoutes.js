@@ -24,6 +24,8 @@ router.get('/details/:id', stockController.getDetails);
 router.get('/details/:id/convert', stockController.convertCurrency);
 
 // TODO: Add routes for update and delete operations
+// DELETE a product
+router.post('/delete/:id', stockController.delete);
 
 module.exports = router;
 

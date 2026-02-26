@@ -61,6 +61,32 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   // TODO: Implement delete functionality
+  try{
+    console.log('Delete called with id:', req.params.id);
+    const { id } = req.params;
+
+    // Find the product by id
+    const product = await Product.findByPk(id);
+
+    if (!product) {
+      return res.status(404).send("Product not found.");
+    }
+
+    // Delete associated records based on product type
+    if (product.type === 'clothing') {
+      await Clothing.destroy({ where: { ProductId: id } });
+    } else if (product.type === 'electronic') {
+      await Electronic.destroy({ where: { ProductId: id } });
+    }
+
+    // Delete the product itself
+    await Product.destroy({ where: { id } });
+
+    res.redirect('/');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error deleting product.");
+  }
 };
 
 exports.getDetails = async (req, res) => {
