@@ -3,8 +3,9 @@
     color: white;
     text-align: center;
     padding: 15px 20px;
-    width: 100%;
-    /* NO position: fixed */
+    width: 100vw;
+    margin-left: -20px;
+    margin-bottom: -20px;
   }
   .footer p {
     margin: 0;
