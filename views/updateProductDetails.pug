@@ -1,33 +1,36 @@
 extends pageLayout 
 
 block content
-    h1 Update Product Details
-    //- Display product information
-    p ID: #{product.id}
-    p Name: #{product.name}
-    p Price: #{product.price} GBP
-    p Quantity: #{product.quantity}
-    p Type: #{product.type}
-
-    //- Display additional details based on product type
-    if product.type === 'clothing' && product.Clothing
-      p Size: #{product.Clothing.size}
-      p Material: #{product.Clothing.material}
-    else if product.type === 'electronic' && product.Electronic
-      p Brand: #{product.Electronic.brand}
-      p Warranty: #{product.Electronic.warranty}
-
-    //- Currency conversion form
-    h2 Currency Conversion
-    form(action=`/details/${product.id}/convert` method="get")
-      label(for="currency") Convert to USD:
-      input(type="hidden" name="currency" value="USD")
-      button(type="submit") Convert to USD
-
-    //- Display converted price if available
-    if convertedPrice
-      p Converted Price: #{convertedPrice} USD
-
-    //- Link back to the inventory list
-    a(href="/") Back to Inventory
-
+    h1 Update Product
+    form(action=`/update/${product.id}` method="post")
+      label(for="id") ID:
+      input(type="text" id="id" value=product.id readonly)
+      br
+      label(for="name") Name:
+      input(type="text" id="name" name="name" value=product.name required)
+      br
+      label(for="price") Price:
+      input(type="number" id="price" name="price" step="0.01" value=product.price required)
+      br
+      label(for="quantity") Quantity:
+      input(type="number" id="quantity" name="quantity" value=product.quantity required)
+      br
+      label(for="type") Type:
+      input(type="text" id="type" name="type" value=product.type readonly)
+      br
+      if product.type === 'clothing' && product.Clothing
+        label(for="size") Size:
+        input(type="text" id="size" name="size" value=product.Clothing.size)
+        br
+        label(for="material") Material:
+        input(type="text" id="material" name="material" value=product.Clothing.material)
+      if product.type === 'electronic' && product.Electronic
+        label(for="brand") Brand:
+        input(type="text" id="brand" name="brand" value=product.Electronic.brand)
+        br
+        label(for="warranty") Warranty:
+        input(type="text" id="warranty" name="warranty" value=product.Electronic.warranty)
+      br
+      .button-group
+        button(type="submit" class="button") Save Changes
+        a(href="/" class="button") Cancel

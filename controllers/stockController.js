@@ -55,8 +55,63 @@ exports.create = async (req, res) => {
   }
 };
 
+exports.updatePage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findByPk(id, {
+      include: [
+        { model: Clothing, required: false },
+        { model: Electronic, required: false }
+      ]
+    });
+    if (!product) {
+      return res.status(404).send("Product not found.");
+    }
+    res.render('updateProductDetails', { product });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error fetching product.");
+  }
+};
+
 exports.update = async (req, res) => {
   // TODO: Implement update functionality
+  try{
+    const { id } = req.params;
+    const { name, price, quantity, type, size, material, brand, warranty } = req.body;
+
+    // Find the product by id
+    const product = await Product.findByPk(id);
+
+    if (!product) {
+      return res.status(404).send("Product not found.");
+    }
+
+    // Update the product details
+    await product.update({ name, price, quantity, type });
+
+    // Update associated records based on product type
+    if (type === 'clothing') {
+      let clothing = await Clothing.findOne({ where: { ProductId: id } });
+      if (clothing) {
+        await clothing.update({ size, material });
+      } else {
+        await Clothing.create({ ProductId: id, size, material });
+      }
+    } else if (type === 'electronic') {
+      let electronic = await Electronic.findOne({ where: { ProductId: id } });
+      if (electronic) {
+        await electronic.update({ brand, warranty });
+      } else {
+        await Electronic.create({ ProductId: id, brand, warranty });
+      }
+    }
+
+    res.redirect(`/details/${id}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error updating product.");
+  }
 };
 
 exports.delete = async (req, res) => {

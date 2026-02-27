@@ -27,6 +27,11 @@ router.get('/details/:id/convert', stockController.convertCurrency);
 // DELETE a product
 router.post('/delete/:id', stockController.delete);
 
+// UPDATE a product
+// GET update product page
+router.get('/update/:id', stockController.updatePage);
+// POST update a product
+router.post('/update/:id', stockController.update);
 
 module.exports = router;
 
