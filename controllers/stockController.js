@@ -62,7 +62,6 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   // TODO: Implement delete functionality
   try{
-    console.log('Delete called with id:', req.params.id);
     const { id } = req.params;
 
     // Find the product by id

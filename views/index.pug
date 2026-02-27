@@ -27,7 +27,11 @@ block content
             td= product.type 
             td
               a(href=`/details/${product.id}`) View Details
+              a(href=`/update/${product.id}` class="btn-icon" title="Update Product Details") 
+                i(class="bi bi-pencil")
               form(action=`/delete/${product.id}` method="post" style="display:inline;")
                 input(type="hidden" name="_method" value="DELETE")
-                button(type="submit" title="Delete" class="delete-btn")  
+                button(type="submit" title="Delete Product" class="btn-icon")  
                   i(class="bi bi-trash")
+            
+                

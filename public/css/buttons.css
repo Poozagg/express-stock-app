@@ -12,14 +12,16 @@
   }
 
 /* Icon delete button */
-.delete-btn {
+.btn-icon {
   background: none;
   border: none;
   color: var(--text-main);
   cursor: pointer;
   padding: 6px;
   font-size: 18px;
+  text-decoration: none;
 }
-.delete-btn:hover {
+.btn-icon:hover {
   color: var(--text-muted);
 }
+
