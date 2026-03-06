@@ -12,4 +12,19 @@ table {
   th {
     background-color: var(--primary);
     color: white;
+    width: 150px;
+  }
+
+  table.details-table th {
+    background-color: var(--text-muted);
+    color: black; 
+    border: 1px, solid black;
+  }
+
+  table.details-table {
+    max-width: 500px;
+  }
+
+  table.details-table td {
+    border: 1px, solid black;
   }

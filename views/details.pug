@@ -1,33 +1,64 @@
 extends pageLayout 
 
 block content
-    h1 Product Details
-    //- Display product information
-    p ID: #{product.id}
-    p Name: #{product.name}
-    p Price: #{product.price} GBP
-    p Quantity: #{product.quantity}
-    p Type: #{product.type}
+    .details-header
+      h1 Product Details 
+      .details-actions
+        a(href=`/update/${product.id}` title="Update Product Details")
+          i(class="bi bi-pencil-square" style="font-size: 1.5rem; margin-left: 0.5rem;")
+        a(href="/" class="back-btn")
+          i(class="bi bi-arrow-left-circle-fill" style="font-size: 1.5rem;")
 
-    //- Display additional details based on product type
-    if product.type === 'clothing' && product.Clothing
-      p Size: #{product.Clothing.size}
-      p Material: #{product.Clothing.material}
-    else if product.type === 'electronic' && product.Electronic
-      p Brand: #{product.Electronic.brand}
-      p Warranty: #{product.Electronic.warranty}
+    table.details-table 
+      tbody
+        tr
+          th ID
+          td= product.id
+        tr
+          th Name
+          td= product.name
+        tr
+          th Price
+          td #{product.price} GBP
+        tr
+          th Quantity
+          td= product.quantity
+        tr
+          th Type
+          td= product.type
+        if product.type === 'clothing' && product.Clothing
+          tr
+            th Size
+            td= product.Clothing.size
+          tr
+            th Material
+            td= product.Clothing.material
+        else if product.type === 'electronic' && product.Electronic
+          tr
+            th Brand
+            td= product.Electronic.brand
+          tr
+            th Warranty
+            td= product.Electronic.warranty
+    br
+    br
 
     //- Currency conversion form
-    h2 Currency Conversion
-    form(action=`/details/${product.id}/convert` method="get")
-      label(for="currency") Convert to USD:
-      input(type="hidden" name="currency" value="USD")
-      button(type="submit") Convert to USD
+    .currency-card
+      h3 Currency Conversion
+      form(action=`/details/${product.id}/convert` method="get")
+        .currency-row
+          label(for="currency") Convert to:
+          select(name="currency" id="currency" onchange="this.form.submit()")
+            option(value="disabled selected") -- Select Currency --
+            option(value="USD") USD
+            option(value="EUR") EUR
+            option(value="AUD") AUD
+            option(value="CAD") CAD 
+            option(value="JPY") JPY
+        //- Display converted price if available
+        .converted-currency
+          if convertedPrice
+            p Converted Price: #{convertedPrice} #{targetCurrency}
 
-    //- Display converted price if available
-    if convertedPrice
-      p Converted Price: #{convertedPrice} USD
-
-    //- Link back to the inventory list
-    a(href="/") Back to Inventory
 

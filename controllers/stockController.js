@@ -204,7 +204,22 @@ exports.sort = async (req, res) => {
 
 exports.convertCurrency = async (req, res) => {
   const { id } = req.params; 
-  const targetCurrency = req.query.currency || 'USD'; // Updated to use query parameter or default to USD
+  // Updated to use query parameter or default to USD
+  const targetCurrency = req.query.currency; 
+
+  // 1) Defining supported currencies and their names for display purposes
+  const Currencies = new Map([
+    ['USD', 'US Dollar'],
+    ['EUR', 'Euro'],
+    ['AUD', 'Australian Dollar'],
+    ['CAD', 'Canadian Dollar'],
+    ['JPY', 'Japanese Yen']
+  ]);
+
+  // 2) Validate the target currency against the supported currencies
+  if (!Currencies.has(targetCurrency)) {
+    return res.status(400).send("Invalid or Unsupported Currency.");
+  }
 
   try {
     const product = await Product.findByPk(id, {

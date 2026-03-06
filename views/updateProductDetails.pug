@@ -4,7 +4,7 @@ block content
     h1 Update Product
     form(action=`/update/${product.id}` method="post")
       label(for="id") ID:
-      input(type="text" id="id" value=product.id readonly)
+      input(type="text" id="id" value=product.id disabled)
       br
       label(for="name") Name:
       input(type="text" id="name" name="name" value=product.name required)

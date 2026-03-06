@@ -5,8 +5,6 @@
     --secondary: #c7a8e3;
     --text-main: #1F2937;
     --text-muted: #8dbc57;
-    --success: #10B981; /* Green for PASS */
-    --danger: #EF4444;  /* Red for FAIL */
   }
 
   html {
@@ -28,3 +26,17 @@
     padding: 20px;
   }
     
+  .details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .details-actions {
+    display: flex;
+    /* gap: 5px; */
+  }
+  .details-actions a {
+    padding: 8px 12px;
+    border-radius: 5px;
+  }
