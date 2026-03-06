@@ -4,7 +4,6 @@ const db = require('../../models');
 const stockController = require('../../controllers/stockController');
 
 describe('Stock Controller', () => {
-  // Unit Tests
   describe('Unit Tests', () => {
     test('Create a new product', async () => {
       // Mocking the request and response objects

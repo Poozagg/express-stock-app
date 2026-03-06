@@ -2,7 +2,6 @@ const db = require('../../models');
 const stockController = require('../../controllers/stockController');
 
 describe('Stock Controller', () => {
-  // Unit Tests
   describe('Unit Tests', () => {
     test('Delete a product', async() => {
       // to delete a product, we first need to create it in the database

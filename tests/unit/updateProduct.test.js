@@ -4,7 +4,6 @@ const db = require('../../models');
 const stockController = require('../../controllers/stockController');
 
 describe('Stock Controller', () => {
-  // Unit Tests
   describe('Unit Tests', () => {
     test('Update a product', async() => {
       await db.Product.create({
