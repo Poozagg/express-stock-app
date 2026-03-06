@@ -107,7 +107,7 @@ exports.update = async (req, res) => {
       }
     }
 
-    res.redirect(`/details/${id}`);
+    res.redirect('/');
   } catch (err) {
     console.error(err);
     res.status(500).send("Error updating product.");

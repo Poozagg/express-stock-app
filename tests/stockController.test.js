@@ -70,6 +70,42 @@ describe('Stock Controller', () => {
       expect(product).toBeNull();
     });
     
+    test('Update a product', async() => {
+      const product = await db.Product.create({
+        id: 'TEST003',
+        name: 'Product to Update',
+        price: 15.99,
+        quantity: 30,
+        type: 'clothing'
+      });
+
+      //Mock request and response objects for the update operation
+      const mockReq = {
+        params: {
+          id: 'TEST003'
+        },
+        body: {
+          name: 'Updated Product Name',
+          price: 12.99,
+          quantity: 25,
+          type: 'clothing',
+          size: 'L',
+          material: 'Polyester'
+        }
+      };
+
+      const mockRes = { redirect: jest.fn() };
+
+      // Call the controller method directly to update it
+      await stockController.update(mockReq, mockRes);
+
+      // Verify the product was updated in the database
+      const updatedProduct = await db.Product.findByPk('TEST003');
+      expect(updatedProduct.name).toBe('Updated Product Name');
+
+      // Check if the mock redirect function was called with the correct argument
+      expect(mockRes.redirect).toHaveBeenCalledWith('/details/TEST003');
+    });
     // More unit tests...
   });
 
@@ -127,6 +163,39 @@ describe('Stock Controller', () => {
       // Verify the product was deleted in the database
       const product = await db.Product.findByPk('INT002');
       expect(product).toBeNull();
+    });
+
+    test('Update a product and check if it is updated', async () => {
+      // Using supertest to simulate HTTP requests
+      // This tests the entire request-response cycle, including routing
+      const updateProduct = {
+        id: 'INT003',
+        name: 'Integration Test for Product Update',
+        price: 15.99,
+        quantity: 30,
+        type: 'clothing'
+      };
+
+      await db.Product.create(updateProduct);
+
+      await request(app)
+        .post('/update/INT003')
+        .send({
+          name: 'Updated Integration Test Product',
+          price: 12.99,
+          quantity: 25,
+          type: 'electronic',
+          size: 'M',
+          material: 'Cotton'
+        })
+        .expect(302); // Expecting a redirect status code
+
+      const updateResponse = await request(app)
+        .get('/update/INT003')
+        .expect(200);
+
+      // Checking the response body for the updated product
+      expect(updateResponse.text).toContain('Updated Integration Test Product');
     });
   });
 
