@@ -40,7 +40,19 @@ describe('Stock Controller', () => {
 
   // Edge Cases and Robust Testing Suggestions
   describe('Edge Cases and Robust Testing', () => {
-    
+    test('Update a non-existent product and check for error handling', async () => {
+      await request(app)
+        .post('/update/NONEXISTENT')
+        .send({
+          name: 'Non-existent Product',
+          price: 9.99,
+          quantity: 10,
+          type: 'clothing',
+          size: 'L',
+          material: 'Polyester'
+        })
+        .expect(404); // Expecting a not found status code
+    });
   });
 });
 
