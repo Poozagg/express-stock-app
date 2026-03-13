@@ -3,20 +3,51 @@ const Product = db.Product;
 const Clothing = db.Clothing;
 const Electronic = db.Electronic;
 const Toy = db.Toy;
+const Book = db.Book;
+const Grocery = db.Grocery;
 const { Op } = require('sequelize');
 const axios = require('axios');
+const clothing = require('../models/clothing');
+
+//Reusable include array for fetching all product types in one query
+const allProductIncludes = [
+  { model: Clothing, required: false },
+  { model: Electronic, required: false },
+  { model: Toy, required: false },
+  { model: Book, required: false },
+  { model: Grocery, required: false }
+];
+
+//dynamic lookup: model reference + field names for each type
+// O(n) - stores only model references in memory, not functions or other data
+const typeModelMap = {
+  clothing: { 
+    model: Clothing, 
+    fields: ['size', 'material', 'color', 'brand', 'gender'] 
+  },
+  electronic: { 
+    model: Electronic, 
+    fields: ['brand', 'warranty', 'model', 'powerConsumption', 'dimensions'] 
+  },
+  toy: { 
+    model: Toy, 
+    fields: ['ageGroup', 'material', 'batteryOperated'] 
+  },
+  book: { 
+    model: Book, 
+    fields: ['author', 'isbn', 'genre', 'publicationDate'] 
+  },
+  grocery: { 
+    model: Grocery, 
+    fields: ['expirationDate', 'nutritionalInfo', 'organic'] 
+  }
+};
 
 exports.index = async (req, res) => {
   try {
     // Fetch all products from the database
-    // The `include` option performs an INNER JOIN with the Clothing and Electronic tables
-    const products = await Product.findAll({
-      include: [
-        { model: Clothing, required: false },
-        { model: Electronic, required: false },
-        { model: Toy, required: false }
-      ]
-    });
+    // The `include` option performs an INNER JOIN with all product tables
+    const products = await Product.findAll({include: allProductIncludes});
     // Render the index view with the fetched products
     res.render('index', { products: products });
   } catch (err) {
@@ -30,19 +61,6 @@ exports.createPage = (req, res) => {
   res.render('createPage');
 };
 
-// Map: type → function that creates that type's record
-const typeCreators = new Map([
-  ['clothing', async (productId, body) => {
-    await Clothing.create({ ProductId: productId, size: body.size, material: body.material });
-  }],
-  ['electronic', async (productId, body) => {
-    await Electronic.create({ ProductId: productId, brand: body.brand, warranty: body.warranty });
-  }],
-  ['toy', async (productId, body) => {
-    await Toy.create({ ProductId: productId, ageGroup: body.ageGroup, material: body.material, batteryOperated: body.batteryOperated });
-  }]
-]);
-
 exports.create = async (req, res) => {
   try {
     // Destructure the request body to get product details
@@ -53,12 +71,14 @@ exports.create = async (req, res) => {
       id, name, price, quantity, type
     });
 
-    // Look up the creator function from the Map
-    const creator = typeCreators.get(type);
+    // Dynamic lookup for type-specific record creation
+    const typeInfo = typeModelMap[type];
 
     // If type exists in Map, create the type-specific record
-    if (creator) {
-      await creator(product.id, req.body);
+    if (typeInfo) {
+      const data = {ProductId: product.id};
+      typeInfo.fields.forEach(field => data[field] = req.body[field]);
+      await typeInfo.model.create(data);
     } else {
       return res.status(400).send("Invalid product type.");
     }
@@ -74,12 +94,7 @@ exports.create = async (req, res) => {
 exports.updatePage = async (req, res) => {
   try {
     const { id } = req.params;
-    const product = await Product.findByPk(id, {
-      include: [
-        { model: Clothing, required: false },
-        { model: Electronic, required: false }
-      ]
-    });
+    const product = await Product.findByPk(id, {include: allProductIncludes});
     if (!product) {
       return res.status(404).send("Product not found.");
     }
@@ -106,24 +121,24 @@ exports.update = async (req, res) => {
     // Update the product details
     await product.update({ name, price, quantity, type });
 
-    // Update associated records based on product type
-    if (type === 'clothing') {
-      let clothing = await Clothing.findOne({ where: { ProductId: id } });
-      if (clothing) {
-        await clothing.update({ size, material });
-      } else {
-        await Clothing.create({ ProductId: id, size, material });
-      }
-    } else if (type === 'electronic') {
-      let electronic = await Electronic.findOne({ where: { ProductId: id } });
-      if (electronic) {
-        await electronic.update({ brand, warranty });
-      } else {
-        await Electronic.create({ ProductId: id, brand, warranty });
+    // Dynamic lookup for type-specific record update/creation
+    const typeInfo = typeModelMap[type];
+
+    // look up O(1) - get model reference from map, then find and update/create record
+    const {model, fields} = typeModelMap[type];
+    if (typeInfo) {
+      const data = {};
+      typeInfo.fields.forEach(field => data[field] = req.body[field]);
+
+      let record = await model.findOne({ where: { ProductId: id } });
+      if (record) {
+        await record.update(data);
+      } else { 
+        await Model.create({ ProductId: id, ...body });
       }
     }
 
-    res.redirect('/');
+    res.redirect('/details/' + id);
   } catch (err) {
     console.error(err);
     res.status(500).send("Error updating product.");
@@ -142,11 +157,10 @@ exports.delete = async (req, res) => {
       return res.status(404).send("Product not found.");
     }
 
-    // Delete associated records based on product type
-    if (product.type === 'clothing') {
-      await Clothing.destroy({ where: { ProductId: id } });
-    } else if (product.type === 'electronic') {
-      await Electronic.destroy({ where: { ProductId: id } });
+    // Dynamic lookup for type-specific record deletion
+    const typeInfo = typeModelMap[product.type];
+    if (typeInfo) {
+      await typeInfo.model.destroy({ where: { ProductId: id } });
     }
 
     // Delete the product itself
@@ -162,12 +176,7 @@ exports.delete = async (req, res) => {
 exports.getDetails = async (req, res) => {
   try {
     const { id } = req.params;
-    const product = await Product.findByPk(id, {
-      include: [
-        { model: Clothing, required: false },
-        { model: Electronic, required: false }
-      ]
-    });
+    const product = await Product.findByPk(id, { include: allProductIncludes });
 
     if (!product) {
       return res.status(404).send("Product not found.");
@@ -189,10 +198,7 @@ exports.search = async (req, res) => {
       where: {
         name: { [Op.like]: `%${query}%` }
       },
-      include: [
-        { model: Clothing, required: false },
-        { model: Electronic, required: false }
-      ]
+      include: allProductIncludes
     });
     res.render('index', { products, searchQuery: query });
   } catch (err) {
@@ -205,10 +211,7 @@ exports.sort = async (req, res) => {
   try {
     // Fetch all products and sort them by name in ascending order
     const products = await Product.findAll({
-      include: [
-        { model: Clothing, required: false },
-        { model: Electronic, required: false }
-      ],
+      include: allProductIncludes,
       order: [['name', 'ASC']]
     });
     res.render('index', { products, sortBy: 'name' });
@@ -239,10 +242,7 @@ exports.convertCurrency = async (req, res) => {
 
   try {
     const product = await Product.findByPk(id, {
-      include: [
-        { model: Clothing, required: false },
-        { model: Electronic, required: false }
-      ]
+      include: allProductIncludes
     });
 
     if (!product) {
