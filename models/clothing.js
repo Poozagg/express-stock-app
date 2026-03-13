@@ -6,6 +6,15 @@ module.exports = (sequelize, DataTypes) => {
     material: {
       type: DataTypes.STRING,
     },
+    color: {
+      type: DataTypes.STRING,
+    },
+    brand: {
+      type: DataTypes.STRING,
+    },
+    gender: {
+      type: DataTypes.STRING,
+    }
   });
 
   Clothing.associate = (models) => {

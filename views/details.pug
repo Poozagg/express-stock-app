@@ -26,20 +26,10 @@ block content
         tr
           th Type
           td= product.type
-        if product.type === 'clothing' && product.Clothing
+        each field in product.getProductTypeDetails()
           tr
-            th Size
-            td= product.Clothing.size
-          tr
-            th Material
-            td= product.Clothing.material
-        else if product.type === 'electronic' && product.Electronic
-          tr
-            th Brand
-            td= product.Electronic.brand
-          tr
-            th Warranty
-            td= product.Electronic.warranty
+            th= field.label
+            td= field.value
     br
     br
 

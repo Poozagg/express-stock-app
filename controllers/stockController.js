@@ -2,6 +2,7 @@ const db = require('../models');
 const Product = db.Product;
 const Clothing = db.Clothing;
 const Electronic = db.Electronic;
+const Toy = db.Toy;
 const { Op } = require('sequelize');
 const axios = require('axios');
 
@@ -12,7 +13,8 @@ exports.index = async (req, res) => {
     const products = await Product.findAll({
       include: [
         { model: Clothing, required: false },
-        { model: Electronic, required: false }
+        { model: Electronic, required: false },
+        { model: Toy, required: false }
       ]
     });
     // Render the index view with the fetched products
@@ -28,21 +30,35 @@ exports.createPage = (req, res) => {
   res.render('createPage');
 };
 
+// Map: type → function that creates that type's record
+const typeCreators = new Map([
+  ['clothing', async (productId, body) => {
+    await Clothing.create({ ProductId: productId, size: body.size, material: body.material });
+  }],
+  ['electronic', async (productId, body) => {
+    await Electronic.create({ ProductId: productId, brand: body.brand, warranty: body.warranty });
+  }],
+  ['toy', async (productId, body) => {
+    await Toy.create({ ProductId: productId, ageGroup: body.ageGroup, material: body.material, batteryOperated: body.batteryOperated });
+  }]
+]);
+
 exports.create = async (req, res) => {
   try {
     // Destructure the request body to get product details
-    const { id, name, price, quantity, type, size, material, brand, warranty } = req.body;
+    const { id, name, price, quantity, type } = req.body;
 
     // Create a new product in the database
     const product = await Product.create({
       id, name, price, quantity, type
     });
 
-    // Based on the product type, create associated Clothing or Electronic record
-    if (type === 'clothing') {
-      await Clothing.create({ ProductId: product.id, size, material });
-    } else if (type === 'electronic') {
-      await Electronic.create({ ProductId: product.id, brand, warranty });
+    // Look up the creator function from the Map
+    const creator = typeCreators.get(type);
+
+    // If type exists in Map, create the type-specific record
+    if (creator) {
+      await creator(product.id, req.body);
     } else {
       return res.status(400).send("Invalid product type.");
     }

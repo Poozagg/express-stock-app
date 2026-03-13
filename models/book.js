@@ -1,18 +1,21 @@
-// TODO: Implement the Book model
-// Expected fields:
-// - author: String
-// - isbn: String
-// - genre: String
-// - publicationDate: Date
-
 module.exports = (sequelize, DataTypes) => {
     const Book = sequelize.define('Book', {
-      // TODO: Define fields here
+      author: {
+        type: DataTypes.STRING
+      },
+      isbn: {
+        type: DataTypes.STRING
+      },
+      genre: {
+        type: DataTypes.STRING
+      },
+      publicationDate: {
+        type: DataTypes.DATE
+      }
     });
   
     Book.associate = (models) => {
-      // TODO: Define associations here
-      // Book.belongsTo(models.Product);
+      Book.belongsTo(models.Product);
     };
   
     return Book;

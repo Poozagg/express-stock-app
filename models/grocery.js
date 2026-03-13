@@ -1,17 +1,18 @@
-// TODO: Implement the Grocery model
-// Expected fields:
-// - expirationDate: Date
-// - nutritionalInfo: String
-// - organic: Boolean
-
 module.exports = (sequelize, DataTypes) => {
     const Grocery = sequelize.define('Grocery', {
-      // TODO: Define fields here
+      expiretionDate: {
+        type: DataTypes.DATE
+      },
+      nutritionalInfo: {
+        type: DataTypes.STRING
+      },
+      organic: {
+        type: DataTypes.BOOLEAN
+      }
     });
   
     Grocery.associate = (models) => {
-      // TODO: Define associations here
-      // Grocery.belongsTo(models.Product);
+      Grocery.belongsTo(models.Product);
     };
   
     return Grocery;
