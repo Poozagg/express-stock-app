@@ -41,7 +41,11 @@ module.exports = (sequelize, DataTypes) => {
 
       return Object.keys(typeData.dataValues)
         .filter(key => !excludeFields.includes(key))
-        .map(key => ({ label: fieldLabels[key] || key, value: typeData[key] }));
+        .map(key => ({ 
+          name: key, //Database field name
+          label: fieldLabels[key] || key, //Human readable label
+          value: typeData[key] //Actual current value from the database
+        }));
     };
   
     Product.associate = (models) => {

@@ -18,18 +18,9 @@ block content
       label(for="type") Type:
       input(type="text" id="type" name="type" value=product.type readonly)
       br
-      if product.type === 'clothing' && product.Clothing
-        label(for="size") Size:
-        input(type="text" id="size" name="size" value=product.Clothing.size)
-        br
-        label(for="material") Material:
-        input(type="text" id="material" name="material" value=product.Clothing.material)
-      if product.type === 'electronic' && product.Electronic
-        label(for="brand") Brand:
-        input(type="text" id="brand" name="brand" value=product.Electronic.brand)
-        br
-        label(for="warranty") Warranty:
-        input(type="text" id="warranty" name="warranty" value=product.Electronic.warranty)
+      each field in product.getProductTypeDetails()
+        label(for=field.name)= field.label + ":"
+        input(type="text" id=field.name name=field.name value=field.value required)
       br
       .button-group
         button(type="submit" class="button") Save Changes
