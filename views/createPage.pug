@@ -21,39 +21,93 @@ block content
         option(value="") Select a type
         option(value="clothing") Clothing
         option(value="electronic") Electronic
+        option(value="toy") Toy
+        option(value="book") Book
+        option(value="grocery") grocery
       br
       //- Conditional fields for clothing and electronics
-      div(id="clothingFields" style="display: none;")
+      div(data-type-fields="clothing" style="display: none;")
         label(for="size") Size:
         input(type="text" id="size" name="size")
         br
         label(for="material") Material:
         input(type="text" id="material" name="material")
-      div(id="electronicFields" style="display: none;")
+        br
+        label(for="color") Color:
+        input(type="text" id="color" name="color")
+        br
+        label(for="brand") Brand:
+        input(type="text" id="brand" name="brand")
+        br
+        label(for="gender") Gender: 
+        input(type="text" id="gender" name="gender")
+        br
+      div(data-type-fields="electronic" style="display: none;")
         label(for="brand") Brand:
         input(type="text" id="brand" name="brand")
         br
         label(for="warranty") Warranty:
         input(type="text" id="warranty" name="warranty")
-      br
+        br
+        label(for="model") Model:
+        input(type="text" id="model" name="model")
+        br
+        label(for="powerConsumption") Power Consumption:
+        input(type="text" id="powerConsumption" name="powerConsumption")
+        br
+        label(for="dimensions") Dimensions:
+        input(type="text" id="dimensions" name="dimensions")
+        br
+      div(data-type-fields="toy" style="display: none;")
+        label(for="ageGroup") Age Group:
+        input(type="text" id="ageGroup" name="ageGroup")
+        br
+        label(for="material") Material:
+        input(type="text" id="material" name="material")
+        br
+        label(for="batteryOperated") Battery Operated:
+        input(type="checkbox" id="batteryOperated" name="batteryOperated")
+        br
+      div(data-type-fields="book" style="display: none;")
+        label(for="author") Author:
+        input(type="text" id="author" name="author")
+        br
+        label(for="isbn") ISBN:
+        input(type="text" id="isbn" name="isbn")
+        br
+        label(for="genre") Genre:
+        input(type="text" id="genre" name="genre")
+        br
+        label(for="publicationDate") Publication Date:
+        input(type="date" id="publicationDate" name="publicationDate")
+        br
+      div(data-type-fields="grocery" style="display: none;")
+        label(for="expirationDate") Expiration Date:
+        input(type="date" id="expirationDate" name="expirationDate")
+        br
+        label(for="nutritionalInfo") Nutritional Info:
+        input(type="text" id="nutritionalInfo" name="nutritionalInfo")
+        br
+        label(for="organic") Organic:
+        input(type="checkbox" id="organic" name="organic")
+        br
       button(type="submit" class="button") Add Product
 
     //- JavaScript for conditional fields
     script.
+      // Hide all - use attribute selector, no need to know specific elements
       const typeSelect = document.getElementById('type');
-      const clothingFields = document.getElementById('clothingFields');
-      const electronicFields = document.getElementById('electronicFields');
-
+    
       function updateFields() {
-        if (typeSelect.value === 'clothing') {
-          clothingFields.style.display = 'block';
-          electronicFields.style.display = 'none';
-        } else if (typeSelect.value === 'electronic') {
-          clothingFields.style.display = 'none';
-          electronicFields.style.display = 'block';
-        } else {
-          clothingFields.style.display = 'none';
-          electronicFields.style.display = 'none';
+        // Hide all type-specific field containers
+        document.querySelectorAll('[data-type-fields]').forEach(el => {
+          el.style.display = 'none';
+        });
+  
+        // Show the selected - dynamically builds selector from typeSelect.value
+        const selected = document.querySelector(`[data-type-fields="${typeSelect.value}"]`);
+        if (selected) {
+          selected.style.display = 'block';
         }
       }
 
