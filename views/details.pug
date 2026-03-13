@@ -18,8 +18,8 @@ block content
           th Name
           td= product.name
         tr
-          th Price
-          td #{product.price} GBP
+          th Price Per Item
+          td #{product.pricePerItem} GBP
         tr
           th Quantity
           td= product.quantity
@@ -46,9 +46,9 @@ block content
             option(value="AUD") AUD
             option(value="CAD") CAD 
             option(value="JPY") JPY
-        //- Display converted price if available
+        //- Display converted  per item if available
         .converted-currency
-          if convertedPrice
-            p Converted Price: #{convertedPrice} #{targetCurrency}
+          if convertedPricePerItem
+            p Converted Price Per Item: #{convertedPricePerItem} #{targetCurrency}
 
 

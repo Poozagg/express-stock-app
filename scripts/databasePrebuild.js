@@ -10,16 +10,16 @@ async function prebuildDatabase() {
 
     // Create sample products
     const products = await Product.bulkCreate([
-      { id: 'CLO001', name: 'T-Shirt', price: 19.99, quantity: 100, type: 'clothing' },
-      { id: 'CLO002', name: 'Jeans', price: 49.99, quantity: 50, type: 'clothing' },
-      { id: 'ELE001', name: 'Smartphone', price: 599.99, quantity: 30, type: 'electronic' },
-      { id: 'ELE002', name: 'Laptop', price: 999.99, quantity: 20, type: 'electronic' },
-      { id: 'TOY001', name: 'Action Figure', price: 14.99, quantity: 200, type: 'toy' },
-      { id: 'TOY002', name: 'Board Game', price: 29.99, quantity: 150, type: 'toy' },
-      { id: 'BOOK001', name: 'Novel', price: 9.99, quantity: 300, type: 'book' },
-      { id: 'BOOK002', name: 'Biography', price: 14.99, quantity: 250, type: 'book' },
-      { id: 'GROC001', name: 'Organic Apples', price: 3.99, quantity: 500, type: 'grocery' },
-      { id: 'GROC002', name: 'Milk', price: 2.49, quantity: 400, type: 'grocery' },
+      { id: 'CLO001', name: 'T-Shirt', pricePerItem: 19.99, quantity: 100, type: 'clothing' },
+      { id: 'CLO002', name: 'Jeans', pricePerItem: 49.99, quantity: 50, type: 'clothing' },
+      { id: 'ELE001', name: 'Smartphone', pricePerItem: 599.99, quantity: 30, type: 'electronic' },
+      { id: 'ELE002', name: 'Laptop', pricePerItem: 999.99, quantity: 20, type: 'electronic' },
+      { id: 'TOY001', name: 'Action Figure', pricePerItem: 14.99, quantity: 200, type: 'toy' },
+      { id: 'TOY002', name: 'Board Game', pricePerItem: 29.99, quantity: 150, type: 'toy' },
+      { id: 'BOOK001', name: 'Novel', pricePerItem: 9.99, quantity: 300, type: 'book' },
+      { id: 'BOOK002', name: 'Biography', pricePerItem: 14.99, quantity: 250, type: 'book' },
+      { id: 'GROC001', name: 'Organic Apples', pricePerItem: 3.99, quantity: 500, type: 'grocery' },
+      { id: 'GROC002', name: 'Milk', pricePerItem: 2.49, quantity: 400, type: 'grocery' },
     ]);
 
     // Create sample clothing items
@@ -36,8 +36,8 @@ async function prebuildDatabase() {
 
     //Create sample toys items
     await Toy.bulkCreate([
-      { ProductId: 'TOY001', ageGroup: '3-5 years', batteryOperated: false },
-      { ProductId: 'TOY002', ageGroup: '6-8 years', batteryOperated: true },
+      { ProductId: 'TOY001', ageGroup: '3-5 years', batteryOperated: false, material: 'Plastic' },
+      { ProductId: 'TOY002', ageGroup: '6-8 years', batteryOperated: true, material: 'Wood' },
     ]);
 
     //Create sample books items

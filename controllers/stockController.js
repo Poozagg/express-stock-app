@@ -64,11 +64,11 @@ exports.createPage = (req, res) => {
 exports.create = async (req, res) => {
   try {
     // Destructure the request body to get product details
-    const { id, name, price, quantity, type } = req.body;
+    const { id, name, pricePerItem, quantity, type } = req.body;
 
     // Create a new product in the database
     const product = await Product.create({
-      id, name, price, quantity, type
+      id, name, pricePerItem, quantity, type
     });
 
     // Dynamic lookup for type-specific record creation
@@ -109,7 +109,7 @@ exports.update = async (req, res) => {
   // TODO: Implement update functionality
   try{
     const { id } = req.params;
-    const { name, price, quantity, type, size, material, brand, warranty } = req.body;
+    const { name, pricePerItem, quantity, type, size, material, brand, warranty } = req.body;
 
     // Find the product by id
     const product = await Product.findByPk(id);
@@ -119,7 +119,7 @@ exports.update = async (req, res) => {
     }
 
     // Update the product details
-    await product.update({ name, price, quantity, type });
+    await product.update({ name, pricePerItem, quantity, type });
 
     // Dynamic lookup for type-specific record update/creation
     const typeInfo = typeModelMap[type];
@@ -253,13 +253,13 @@ exports.convertCurrency = async (req, res) => {
 
     const exchangeRate = response.data.rates[targetCurrency];
     
-    const convertedPrice = targetCurrency === 'GBP' 
-     ? product.price 
-     : (product.price * exchangeRate).toFixed(2);
+    const convertedPricePerItem = targetCurrency === 'GBP' 
+     ? product.pricePerItem 
+     : (product.pricePerItem * exchangeRate).toFixed(2);
 
     res.render('details', { 
       product: product, 
-      convertedPrice: convertedPrice, 
+      convertedPricePerItem: convertedPricePerItem, 
       targetCurrency: targetCurrency,
       originalCurrency: 'GBP'
     });

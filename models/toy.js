@@ -5,8 +5,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       material: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.STRING
       },
       batteryOperated: {
         type: DataTypes.BOOLEAN,

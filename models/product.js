@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      price: {
+      pricePerItem: {
         type: DataTypes.FLOAT,
         allowNull: false
       },
