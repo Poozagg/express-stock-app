@@ -1,5 +1,5 @@
 const db = require('../models');
-const { Product, Clothing, Electronic } = db;
+const { Product, Clothing, Electronic, Toy, Book, Grocery } = db;
 
 async function prebuildDatabase() {
   try {
@@ -14,6 +14,12 @@ async function prebuildDatabase() {
       { id: 'CLO002', name: 'Jeans', price: 49.99, quantity: 50, type: 'clothing' },
       { id: 'ELE001', name: 'Smartphone', price: 599.99, quantity: 30, type: 'electronic' },
       { id: 'ELE002', name: 'Laptop', price: 999.99, quantity: 20, type: 'electronic' },
+      { id: 'TOY001', name: 'Action Figure', price: 14.99, quantity: 200, type: 'toy' },
+      { id: 'TOY002', name: 'Board Game', price: 29.99, quantity: 150, type: 'toy' },
+      { id: 'BOOK001', name: 'Novel', price: 9.99, quantity: 300, type: 'book' },
+      { id: 'BOOK002', name: 'Biography', price: 14.99, quantity: 250, type: 'book' },
+      { id: 'GROC001', name: 'Organic Apples', price: 3.99, quantity: 500, type: 'grocery' },
+      { id: 'GROC002', name: 'Milk', price: 2.49, quantity: 400, type: 'grocery' },
     ]);
 
     // Create sample clothing items
@@ -26,6 +32,24 @@ async function prebuildDatabase() {
     await Electronic.bulkCreate([
       { ProductId: 'ELE001', brand: 'TechGiant', warranty: '1 year', model: 'X2000', powerConsumption: 5, dimensions: '150x75x8mm' },
       { ProductId: 'ELE002', brand: 'LaptopPro', warranty: '2 years', model: 'UltraBook', powerConsumption: 45, dimensions: '350x240x18mm' },
+    ]);
+
+    //Create sample toys items
+    await Toy.bulkCreate([
+      { ProductId: 'TOY001', ageGroup: '3-5 years', batteryOperated: false },
+      { ProductId: 'TOY002', ageGroup: '6-8 years', batteryOperated: true },
+    ]);
+
+    //Create sample books items
+    await Book.bulkCreate([
+      { ProductId: 'BOOK001', author: 'John Doe', isbn: '1234567890', genre: 'Fiction', publicationDate: '2020-01-01' },
+      { ProductId: 'BOOK002', author: 'Jane Smith', isbn: '0987654321', genre: 'Non-Fiction', publicationDate: '2019-05-15' },
+    ]);
+    
+     //Create sample groceries items
+     await Grocery.bulkCreate([
+      { ProductId: 'GROC001', expiretionDate: '2024-12-31', nutritionalInfo: 'Calories: 200, Fat: 10g, Carbs: 20g, Protein: 5g', organic: true },
+      { ProductId: 'GROC002', expiretionDate: '2024-11-30', nutritionalInfo: 'Calories: 150, Fat: 5g, Carbs: 15g, Protein: 3g', organic: false },
     ]);
 
     console.log('Sample data created successfully.');
