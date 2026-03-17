@@ -5,15 +5,18 @@ const stockController = require('../../controllers/stockController');
 
 describe('Stock Controller', () => {
   describe('Unit Tests', () => {
-    test('Update a product', async() => {
+    beforeAll(async () => {
+      // Create test products in db for update tests
       await db.Product.create({
         id: 'TEST004',
         name: 'Product to Update',
-        price: 15.99,
+        pricePerItem: 15.99,
         quantity: 30,
         type: 'clothing'
       });
-
+    });
+    
+    test('Update a product', async() => {
       //Mock request and response objects for the update operation
       const mockReq = {
         params: {
@@ -21,7 +24,7 @@ describe('Stock Controller', () => {
         },
         body: {
           name: 'Updated Product Name',
-          price: 12.99,
+          pricePerItem: 12.99,
           quantity: 25,
           type: 'clothing',
           size: 'L',
@@ -29,7 +32,11 @@ describe('Stock Controller', () => {
         }
       };
 
-      const mockRes = { redirect: jest.fn() };
+      const mockRes = { 
+        redirect: jest.fn(),
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn() 
+      };
 
       // Call the controller method directly to update it
       await stockController.update(mockReq, mockRes);
@@ -39,7 +46,7 @@ describe('Stock Controller', () => {
       expect(updatedProduct.name).toBe('Updated Product Name');
 
       // Check if the mock redirect function was called with the correct argument
-      expect(mockRes.redirect).toHaveBeenCalledWith('/');
+      expect(mockRes.redirect).toHaveBeenCalledWith('/details/TEST004');
     });
   });
 });

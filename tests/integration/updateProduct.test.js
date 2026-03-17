@@ -4,24 +4,25 @@ const db = require('../../models');
 
 describe('Stock Controller', () => {
   describe('Integration Tests', () => {
+    beforeAll(async () => {
+      // Create a test product in the database to update
+      await db.Product.create({
+        id: 'INT003',
+        name: 'Integration Test for Product Update',
+        pricePerItem: 15.99,
+        quantity: 30,
+        type: 'clothing'
+      });
+    });
+
     test('Update a product and check if it is updated', async () => {
       // Using supertest to simulate HTTP requests
       // This tests the entire request-response cycle, including routing
-      const updateProduct = {
-        id: 'INT003',
-        name: 'Integration Test for Product Update',
-        price: 15.99,
-        quantity: 30,
-        type: 'clothing'
-      };
-
-      await db.Product.create(updateProduct);
-
       await request(app)
         .post('/update/INT003')
         .send({
           name: 'Updated Integration Test Product',
-          price: 12.99,
+          pricePerItem: 12.99,
           quantity: 25,
           type: 'electronic',
           size: 'M',
@@ -45,7 +46,7 @@ describe('Stock Controller', () => {
         .post('/update/NONEXISTENT')
         .send({
           name: 'Non-existent Product',
-          price: 9.99,
+          pricePerItem: 9.99,
           quantity: 10,
           type: 'clothing',
           size: 'L',

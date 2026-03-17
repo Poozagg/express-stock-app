@@ -134,7 +134,7 @@ exports.update = async (req, res) => {
       if (record) {
         await record.update(data);
       } else { 
-        await Model.create({ ProductId: id, ...body });
+        await model.create({ ProductId: id, ...data });
       }
     }
 
@@ -209,12 +209,33 @@ exports.search = async (req, res) => {
 
 exports.sort = async (req, res) => {
   try {
-    // Fetch all products and sort them by name in ascending order
-    const products = await Product.findAll({
-      include: allProductIncludes,
-      order: [['name', 'ASC']]
-    });
-    res.render('index', { products, sortBy: 'name' });
+     // 1. Read query params from URL
+     const { sortBy, sortOrder } = req.query;
+    
+     // 2. Validate sortBy
+     const validSortFields = ['name', 'pricePerItem', 'quantity', 'type'];
+     if (!sortBy || !validSortFields.includes(sortBy)) {
+       return res.redirect('/');
+     }
+     
+     // 3. Validate sortOrder (default to ASC if invalid)
+     const validOrders = ['asc', 'desc'];
+     const safeOrder = validOrders.includes(sortOrder?.toLowerCase()) 
+       ? sortOrder.toUpperCase() 
+       : 'ASC';
+     
+     // 4. Dynamic single-column sort based on user selection
+     const products = await Product.findAll({
+       include: allProductIncludes,
+       order: [[sortBy, safeOrder]]  // Single column, user-selected
+     });
+     
+     // 5. Pass both values to view for dropdown state
+     res.render('index', { 
+       products, 
+       sortBy, 
+       sortOrder: sortOrder?.toLowerCase() 
+     });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error sorting products.");

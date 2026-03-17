@@ -10,7 +10,7 @@ describe('Stock Controller', () => {
       const newProduct = {
         id: 'INT001',
         name: 'Integration Test Product',
-        price: 19.99,
+        pricePerItem: 19.99,
         quantity: 50,
         type: 'electronic'
       };

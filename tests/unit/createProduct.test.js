@@ -12,7 +12,7 @@ describe('Stock Controller', () => {
         body: {
           id: 'TEST001',
           name: 'Test Product',
-          price: 9.99,
+          pricePerItem: 9.99,
           quantity: 100,
           type: 'clothing'
         }

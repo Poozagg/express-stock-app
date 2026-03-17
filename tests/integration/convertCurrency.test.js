@@ -4,16 +4,27 @@ const db = require('../../models');
 describe('Stock Controller', () => {
   // Integration Tests
   describe('Integration Tests', () => {
-    test('Convert product price to USD and display it', async () => {
-      // Using supertest to simulate HTTP requests
-      // This tests the entire request-response cycle, including routing
+    beforeAll(async () => {
+      // Create test products in the db
       await db.Product.create({
         id: 'INT005',
         name: 'Integration Currency Product',
-        price: 100.00,
+        pricePerItem: 100.00,
         quantity: 10,
         type: 'electronic'
       });
+      await db.Product.create({
+        id: 'EDGE002',
+        name: 'Edge Case Currency Product',
+        pricePerItem: 50.00,
+        quantity: 5,
+        type: 'clothing'
+      });
+    });
+
+    test('Convert product price to USD and display it', async () => {
+      // Using supertest to simulate HTTP requests
+      // This tests the entire request-response cycle, including routing
       const response = await request(app)
         .get('/details/INT005/convert?currency=USD')
         .expect(200);
@@ -22,17 +33,11 @@ describe('Stock Controller', () => {
       expect(response.text).toContain('Converted Price');
     });
   });
+  
   // Edge Cases and Robust Testing Suggestions
   describe('Edge Cases and Robust Testing', () => {
     test('Convert currency with invalid currency code', async () => {
       // Testing error handling for unsupported currency
-      await db.Product.create({
-        id: 'EDGE002',
-        name: 'Edge Case Currency Product',
-        price: 50.00,
-        quantity: 5,
-        type: 'clothing'
-      });
       const response = await request(app)
         .get('/details/EDGE002/convert?currency=FAKE')
         .expect(400); // Expecting an error status code

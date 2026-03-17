@@ -3,17 +3,19 @@ const stockController = require('../../controllers/stockController');
 
 describe('Stock Controller', () => {
   describe('Unit Tests', () => {
-    test('Delete a product', async() => {
-      // to delete a product, we first need to create it in the database
-      // directly calls the Sequelize model to create a product without going through the controller
+    beforeEach(async () => {
       await db.Product.create({
         id: 'TEST002',
         name: 'Product to Delete',
-        price: 5.99,
+        pricePerItem: 5.99,
         quantity: 20,
         type: 'electronic'
       });
 
+    });
+    test('Delete a product', async() => {
+      // to delete a product, we first need to create it in the database
+      // directly calls the Sequelize model to create a product without going through the controller
       // Mocking the request and response objects for the delete operation
       mockReq = {
         params: {

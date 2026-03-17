@@ -2,10 +2,22 @@ extends pageLayout
 
 block content
     //- Sort options
-    form(action="/sort" method="get")
-      select(name="sortBy" onchange="this.form.submit()")
+    form(action="/sort" method="get" class="d-flex gap-2 align-items-center")
+      select(name="sortBy" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()" )
+        option(value="" disabled selected=!sortBy) Sort by
         option(value="name" selected=sortBy === 'name') Sort by Name
-        option(value="price-per-item" selected=sortBy === 'pricePerItem') Sort by Price Per Item
+        option(value="pricePerItem" selected=sortBy === 'pricePerItem') Sort by Price Per Item
+        option(value="quantity" selected=sortBy === 'quantity') Sort by Quantity
+        option(value="type" selected=sortBy === 'type') Sort by Type
+      
+      //- If no sort applied yet, show Order dropdown
+      //- If sort applied, show toggle button
+      if sortBy
+        //- Toggle button: shows current state, submits opposite value
+        select(name="sortOrder" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()")
+          option(value="asc" selected=(sortOrder === 'asc')) Asc
+          option(value="desc" selected=(sortOrder === 'desc')) Desc
+        
       
     //- Display products
     table
