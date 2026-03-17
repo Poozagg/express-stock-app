@@ -242,6 +242,71 @@ exports.sort = async (req, res) => {
   }
 };
 
+exports.filter = async (req, res) => {
+  try {
+    const { type, minPrice, maxPrice, lowStock, sortBy, sortOrder } = req.query;
+
+    // If no filter params provided at all, redirect to home
+    if (!type && !minPrice && !maxPrice && !lowStock) {
+      return res.redirect('/');
+    }
+
+    // Build dynamic where clause based on provided filters
+    const where = {};
+
+    // Type filter - validate against supported types
+    const validTypes = Object.keys(typeModelMap);
+    if (type && validTypes.includes(type)) {
+      where.type = type;
+    }
+
+    // Price range filter using Sequelize operators
+    if (minPrice || maxPrice) {
+      where.pricePerItem = {};
+      if (minPrice) {
+        where.pricePerItem[Op.gte] = parseFloat(minPrice);
+      }
+      if (maxPrice) {
+        where.pricePerItem[Op.lte] = parseFloat(maxPrice);
+      }
+    }
+
+    // Low stock filter (quantity < 10)
+    if (lowStock === 'true') {
+      where.quantity = { [Op.lt]: 10 };
+    }
+
+    // Build query options
+    const queryOptions = {
+      where,
+      include: allProductIncludes
+    };
+
+    // Apply sorting if provided
+    const validSortFields = ['name', 'pricePerItem', 'quantity', 'type'];
+    if (sortBy && validSortFields.includes(sortBy)) {
+      const validOrders = ['asc', 'desc'];
+      const safeOrder = validOrders.includes(sortOrder?.toLowerCase())
+        ? sortOrder.toUpperCase()
+        : 'ASC';
+      queryOptions.order = [[sortBy, safeOrder]];
+    }
+
+    // Fetch filtered (and optionally sorted) products
+    const products = await Product.findAll(queryOptions);
+
+    // Pass filter and sort values back to the view for state preservation
+    res.render('index', { 
+      products, type, minPrice, maxPrice, lowStock,
+      sortBy,
+      sortOrder: sortOrder?.toLowerCase()
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error filtering products.");
+  }
+};
+
 exports.convertCurrency = async (req, res) => {
   const { id } = req.params; 
   // Updated to use query parameter or default to USD

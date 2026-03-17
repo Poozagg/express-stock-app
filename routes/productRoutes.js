@@ -17,6 +17,9 @@ router.get('/search', stockController.search);
 // GET sort products
 router.get('/sort', stockController.sort);
 
+// GET filter products
+router.get('/filter', stockController.filter);
+
 // GET product details
 router.get('/details/:id', stockController.getDetails);
 
@@ -32,6 +35,8 @@ router.post('/delete/:id', stockController.delete);
 router.get('/update/:id', stockController.updatePage);
 // POST update a product
 router.post('/update/:id', stockController.update);
+
+//
 
 module.exports = router;
 

@@ -1,24 +1,92 @@
 extends pageLayout
 
 block content
-    //- Sort options
-    form(action="/sort" method="get" class="d-flex gap-2 align-items-center")
-      select(name="sortBy" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()" )
-        option(value="" disabled selected=!sortBy) Sort by
-        option(value="name" selected=sortBy === 'name') Sort by Name
-        option(value="pricePerItem" selected=sortBy === 'pricePerItem') Sort by Price Per Item
-        option(value="quantity" selected=sortBy === 'quantity') Sort by Quantity
-        option(value="type" selected=sortBy === 'type') Sort by Type
-      
-      //- If no sort applied yet, show Order dropdown
-      //- If sort applied, show toggle button
-      if sortBy
-        //- Toggle button: shows current state, submits opposite value
-        select(name="sortOrder" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()")
-          option(value="asc" selected=(sortOrder === 'asc')) Asc
-          option(value="desc" selected=(sortOrder === 'desc')) Desc
+    //- General sort options (hidden when filter is active)
+    if !(type || minPrice || maxPrice || lowStock)
+      form(action="/sort" method="get" class="d-flex gap-2 align-items-center")
+        select(name="sortBy" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()" )
+          option(value="" disabled selected=!sortOrder) Sort by
+          option(value="name" selected=sortBy === 'name') Sort by Name
+          option(value="pricePerItem" selected=sortBy === 'pricePerItem') Sort by Price Per Item
+          option(value="quantity" selected=sortBy === 'quantity') Sort by Quantity
+          option(value="type" selected=sortBy === 'type') Sort by Type
         
-      
+        if sortBy
+          select(name="sortOrder" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()")
+            option(value="asc" selected=(sortOrder === 'asc')) Asc
+            option(value="desc" selected=(sortOrder === 'desc')) Desc
+
+    //- Filter Button
+    button(type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#filterModal")
+      i(class="bi bi-funnel")
+      |  Filter
+    //- Clear Filters (only show if filters active)
+    if type || minPrice || maxPrice || lowStock
+      a(href="/" class="btn btn-outline-secondary btn-sm" style="margin-left: 10px;") Clear Filters
+
+    //- Sort for filtered results (only visible when filter is active)
+    if type || minPrice || maxPrice || lowStock
+      form(action="/filter" method="get" class="d-flex gap-2 align-items-center" style="margin-top: 10px;")
+        //- Hidden inputs to preserve active filter params
+        if type
+          input(type="hidden" name="type" value=type)
+        if minPrice
+          input(type="hidden" name="minPrice" value=minPrice)
+        if maxPrice
+          input(type="hidden" name="maxPrice" value=maxPrice)
+        if lowStock
+          input(type="hidden" name="lowStock" value=lowStock)
+        select(name="sortBy" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()")
+          option(value="" disabled selected=!sortBy) Sort filtered results
+          option(value="name" selected=sortBy === 'name') Sort by Name
+          option(value="pricePerItem" selected=sortBy === 'pricePerItem') Sort by Price Per Item
+          option(value="quantity" selected=sortBy === 'quantity') Sort by Quantity
+          option(value="type" selected=sortBy === 'type') Sort by Type
+        if sortBy
+          select(name="sortOrder" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()")
+            option(value="asc" selected=(sortOrder === 'asc')) Asc
+            option(value="desc" selected=(sortOrder === 'desc')) Desc
+
+    //- Bootstrap Modal
+    .modal.fade#filterModal(tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h5.modal-title#filterModalLabel Filter Products
+            button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+          form(action="/filter" method="get")
+            .modal-body
+              //- Type Filter
+              .mb-3
+                label(for="typeFilter" class="form-label") Type
+                select(name="type" id="typeFilter" class="form-select")
+                  option(value="" selected=!type) All Types
+                  option(value="clothing" selected=type === 'clothing') Clothing
+                  option(value="electronic" selected=type === 'electronic') Electronics
+                  option(value="book" selected=type === 'book') Books
+                  option(value="grocery" selected=type === 'grocery') Groceries
+                  option(value="toy" selected=type === 'toy') Toys
+              
+              //- Price Range
+              .mb-3
+                label(class="form-label") Price Range
+                .d-flex.gap-2.align-items-center
+                  input(type="number" name="minPrice" placeholder="Min £" value=minPrice class="form-control" step="0.01")
+                  span to
+                  input(type="number" name="maxPrice" placeholder="Max £" value=maxPrice class="form-control" step="0.01")
+              
+              //- Low Stock
+              .mb-3.form-check
+                input(type="checkbox" name="lowStock" value="true" checked=(lowStock === 'true') class="form-check-input" id="lowStockFilter")
+                label(for="lowStockFilter" class="form-check-label") Show Low Stock Only (< 10)
+            
+            .modal-footer
+              button(type="button" class="btn btn-secondary" data-bs-dismiss="modal") Cancel
+              a(href="/" class="btn btn-outline-secondary") Clear
+              button(type="submit" class="btn btn-primary") Apply Filters
+        
+    br
+    br
     //- Display products
     table
       thead
