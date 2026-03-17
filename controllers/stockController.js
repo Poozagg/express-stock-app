@@ -212,7 +212,7 @@ exports.sort = async (req, res) => {
      const { sortBy, sortOrder } = req.query;
     
      // 2. Validate sortBy
-     const validSortFields = ['name', 'pricePerItem', 'quantity', 'type'];
+      const validSortFields = ['id', 'name', 'pricePerItem', 'quantity', 'type'];
      if (!sortBy || !validSortFields.includes(sortBy)) {
        return res.redirect('/');
      }
@@ -282,7 +282,7 @@ exports.filter = async (req, res) => {
     };
 
     // Apply sorting if provided
-    const validSortFields = ['name', 'pricePerItem', 'quantity', 'type'];
+    const validSortFields = ['id', 'name', 'pricePerItem', 'quantity', 'type'];
     if (sortBy && validSortFields.includes(sortBy)) {
       const validOrders = ['asc', 'desc'];
       const safeOrder = validOrders.includes(sortOrder?.toLowerCase())

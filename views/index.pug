@@ -7,6 +7,7 @@ block content
         form(action="/sort" method="get" class="d-flex gap-2 align-items-center")
           select(name="sortBy" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()" )
             option(value="" disabled selected=!sortOrder) Sort by
+            option(value="id" selected=sortBy === 'id') Sort by ID
             option(value="name" selected=sortBy === 'name') Sort by Name
             option(value="pricePerItem" selected=sortBy === 'pricePerItem') Sort by Price Per Item
             option(value="quantity" selected=sortBy === 'quantity') Sort by Quantity
@@ -28,6 +29,7 @@ block content
             input(type="hidden" name="lowStock" value=lowStock)
           select(name="sortBy" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()")
             option(value="" disabled selected=!sortBy) Sort filtered results
+            option(value="id" selected=sortBy === 'id') Sort by ID
             option(value="name" selected=sortBy === 'name') Sort by Name
             option(value="pricePerItem" selected=sortBy === 'pricePerItem') Sort by Price Per Item
             option(value="quantity" selected=sortBy === 'quantity') Sort by Quantity
