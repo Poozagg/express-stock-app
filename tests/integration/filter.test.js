@@ -233,12 +233,14 @@ describe('Filter Controller - Integration Tests', () => {
       expect(response.text).toContain('Clear Filters');
     });
 
-    test('GET /filter hides general sort and shows filter sort', async () => {
+    test('GET /filter sortable column headers preserve filter params', async () => {
       const response = await request(app)
         .get('/filter?type=electronic')
         .expect(200);
 
-      expect(response.text).toContain('Sort filtered results');
+      // Column headers should link to /filter with filter params preserved
+      expect(response.text).toContain('/filter?type=electronic&amp;sortBy=name&amp;sortOrder=asc');
+      expect(response.text).toContain('/filter?type=electronic&amp;sortBy=pricePerItem&amp;sortOrder=asc');
     });
   });
 });

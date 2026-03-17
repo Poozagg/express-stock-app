@@ -1,44 +1,12 @@
 extends pageLayout
 
 block content
-    //- Sort and Filter controls on the same line
+    //- Helper variables for building sort URLs
+    //- When filters are active, sort links go to /filter with filter params preserved
+    //- When no filters, sort links go to /sort
+
+    //- Filter controls
     .controls-row
-      if !(type || minPrice || maxPrice || lowStock)
-        form(action="/sort" method="get" class="d-flex gap-2 align-items-center")
-          select(name="sortBy" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()" )
-            option(value="" disabled selected=!sortOrder) Sort by
-            option(value="id" selected=sortBy === 'id') Sort by ID
-            option(value="name" selected=sortBy === 'name') Sort by Name
-            option(value="pricePerItem" selected=sortBy === 'pricePerItem') Sort by Price Per Item
-            option(value="quantity" selected=sortBy === 'quantity') Sort by Quantity
-            option(value="type" selected=sortBy === 'type') Sort by Type
-          if sortBy
-            select(name="sortOrder" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()")
-              option(value="asc" selected=(sortOrder === 'asc')) Asc
-              option(value="desc" selected=(sortOrder === 'desc')) Desc
-
-      if type || minPrice || maxPrice || lowStock
-        form(action="/filter" method="get" class="d-flex gap-2 align-items-center")
-          if type
-            input(type="hidden" name="type" value=type)
-          if minPrice
-            input(type="hidden" name="minPrice" value=minPrice)
-          if maxPrice
-            input(type="hidden" name="maxPrice" value=maxPrice)
-          if lowStock
-            input(type="hidden" name="lowStock" value=lowStock)
-          select(name="sortBy" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()")
-            option(value="" disabled selected=!sortBy) Sort filtered results
-            option(value="id" selected=sortBy === 'id') Sort by ID
-            option(value="name" selected=sortBy === 'name') Sort by Name
-            option(value="pricePerItem" selected=sortBy === 'pricePerItem') Sort by Price Per Item
-            option(value="quantity" selected=sortBy === 'quantity') Sort by Quantity
-            option(value="type" selected=sortBy === 'type') Sort by Type
-          if sortBy
-            select(name="sortOrder" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()")
-              option(value="asc" selected=(sortOrder === 'asc')) Asc
-              option(value="desc" selected=(sortOrder === 'desc')) Desc
-
       button(type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#filterModal")
         i(class="bi bi-funnel")
         |  Filter
@@ -90,11 +58,45 @@ block content
     table
       thead
         tr
-          th ID
-          th Name
-          th Price Per Item
-          th Quantity
-          th Type
+          //- Sortable column headers
+          //- Each header builds a sort URL; clicking toggles asc/desc
+          -
+            // Build base URL depending on whether filters are active
+            var hasFilters = type || minPrice || maxPrice || lowStock;
+            var filterParams = '';
+            if (hasFilters) {
+              var parts = [];
+              if (type) parts.push('type=' + encodeURIComponent(type));
+              if (minPrice) parts.push('minPrice=' + encodeURIComponent(minPrice));
+              if (maxPrice) parts.push('maxPrice=' + encodeURIComponent(maxPrice));
+              if (lowStock) parts.push('lowStock=' + encodeURIComponent(lowStock));
+              filterParams = parts.join('&');
+            }
+            var basePath = hasFilters ? '/filter' : '/sort';
+            // Define sortable columns
+            var columns = [
+              { field: 'id', label: 'ID' },
+              { field: 'name', label: 'Name' },
+              { field: 'pricePerItem', label: 'Price Per Item' },
+              { field: 'quantity', label: 'Quantity' },
+              { field: 'type', label: 'Type' }
+            ];
+          each col in columns
+            - var nextOrder = (sortBy === col.field && sortOrder === 'asc') ? 'desc' : 'asc';
+            - var sortParams = 'sortBy=' + col.field + '&sortOrder=' + nextOrder;
+            - var href = basePath + '?' + (hasFilters ? filterParams + '&' : '') + sortParams;
+            th.sortable
+              a(href=href)
+                | #{col.label}
+                span.sort-icons
+                  if sortBy === col.field && sortOrder === 'asc'
+                    i(class="bi bi-caret-up-fill sort-icon active")
+                  else
+                    i(class="bi bi-caret-up-fill sort-icon")
+                  if sortBy === col.field && sortOrder === 'desc'
+                    i(class="bi bi-caret-down-fill sort-icon active")
+                  else
+                    i(class="bi bi-caret-down-fill sort-icon")
           th Actions
       tbody
         each product in products

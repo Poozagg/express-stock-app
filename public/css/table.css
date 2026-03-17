@@ -28,3 +28,43 @@ table {
   table.details-table td {
     border: 1px, solid black;
   }
+
+  /* Sortable column headers */
+  th.sortable {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  th.sortable a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  th.sortable:hover {
+    background-color: #0b7f75;
+  }
+
+  th.sortable a:hover {
+    color: white;
+  }
+
+  .sort-icons {
+    display: inline-flex;
+    flex-direction: column;
+    line-height: 0;
+    margin-left: 5px;
+    vertical-align: middle;
+  }
+
+  .sort-icon {
+    font-size: 0.85rem;
+    opacity: 0.4;
+    line-height: 1;
+  }
+
+  .sort-icon.active {
+    opacity: 1;
+  }
