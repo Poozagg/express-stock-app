@@ -9,6 +9,11 @@ describe('Sort Controller - Integration Tests', () => {
         await db.Product.create({ id: 'SORT002', name: 'Banana', pricePerItem: 10.00, quantity: 20, type: 'grocery' });
         await db.Product.create({ id: 'SORT003', name: 'Cherry', pricePerItem: 20.00, quantity: 15, type: 'grocery' });
     });
+
+    afterAll(async () => {
+      // Clean up test products from db
+      await db.Product.destroy({ where: { id: ['SORT001', 'SORT002', 'SORT003'] } });
+    });
       
     describe('Sort by Name', () => {
         test('GET /sort?sortBy=name&sortOrder=asc returns products sorted A-Z', async () => {

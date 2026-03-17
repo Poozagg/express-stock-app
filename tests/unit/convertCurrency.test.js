@@ -17,6 +17,11 @@ describe('Stock Controller', () => {
       });
     });
 
+    afterAll(async () => {
+      // Clean up test product
+      await db.Product.destroy({ where: { id: 'TEST006' } });
+    });
+
     test('Convert product price to USD', async () => {
       // Mock axios response
       axios.get.mockResolvedValue({

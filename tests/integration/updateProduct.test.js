@@ -15,6 +15,11 @@ describe('Stock Controller', () => {
       });
     });
 
+    afterAll(async () => {
+      // Clean up the test product from the database
+      await db.Product.destroy({ where: { id: 'INT003' } });
+    });
+
     test('Update a product and check if it is updated', async () => {
       // Using supertest to simulate HTTP requests
       // This tests the entire request-response cycle, including routing

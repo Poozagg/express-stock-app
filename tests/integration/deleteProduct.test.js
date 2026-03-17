@@ -27,6 +27,12 @@ describe('Stock Controller', () => {
       });
     });
 
+    afterAll(async () => {
+      // Clean up test data
+      await db.Clothing.destroy({ where: { ProductId: 'EDGE001' } });
+      await db.Product.destroy({ where: { id: ['INT002', 'EDGE001'] } });
+    });
+
     test('Delete a product and check if its deleted ', async () => {
       // Using supertest to simulate HTTP requests
       // This tests the entire request-response cycle, including routing

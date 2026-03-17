@@ -3,7 +3,7 @@ const stockController = require('../../controllers/stockController');
 
 describe('Stock Controller', () => {
   describe('Unit Tests', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
       await db.Product.create({
         id: 'TEST002',
         name: 'Product to Delete',
@@ -12,6 +12,11 @@ describe('Stock Controller', () => {
         type: 'electronic'
       });
 
+    });
+
+    afterAll(async () => {
+      // Clean up the database after tests
+      await db.Product.destroy({ where: { id: 'TEST002' } });
     });
     test('Delete a product', async() => {
       // to delete a product, we first need to create it in the database

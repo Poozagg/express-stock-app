@@ -7,6 +7,10 @@ describe('Sort Controller - Unit Tests', () => {
     await db.Product.create({ id: 'SORT012', name: 'Cherry', pricePerItem: 20.00, quantity: 15, type: 'grocery' });
   });
 
+  afterAll(async () => {
+    await db.Product.destroy({ where: { id: ['SORT010', 'SORT011', 'SORT012'] } });
+  });
+  
   describe('Sort by Name', () => {
     test('sorts products by name in ascending order', async () => {
       const mockReq = { query: { sortBy: 'name', sortOrder: 'asc' } };

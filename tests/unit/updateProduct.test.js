@@ -15,6 +15,11 @@ describe('Stock Controller', () => {
         type: 'clothing'
       });
     });
+
+    afterAll(async () => {
+      // Clean up test products from db
+      await db.Product.destroy({ where: { id: 'TEST004' } });
+    });
     
     test('Update a product', async() => {
       //Mock request and response objects for the update operation

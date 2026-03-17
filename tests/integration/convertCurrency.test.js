@@ -22,6 +22,11 @@ describe('Stock Controller', () => {
       });
     });
 
+    afterAll(async () => {
+      // Clean up test products from the db
+      await db.Product.destroy({ where: { id: ['INT005', 'EDGE002'] } });
+    });
+
     test('Convert product price to USD and display it', async () => {
       // Using supertest to simulate HTTP requests
       // This tests the entire request-response cycle, including routing
