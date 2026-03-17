@@ -1,11 +1,14 @@
 .search-form {
     display: flex;
     align-items: center;
+    position: relative;
   }
 
   .search-icon-left {
     position: absolute;
-    right: 245px;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     color: #9CA3AF;
     pointer-events: none;
     z-index: 1;

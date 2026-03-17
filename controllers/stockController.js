@@ -7,7 +7,6 @@ const Book = db.Book;
 const Grocery = db.Grocery;
 const { Op } = require('sequelize');
 const axios = require('axios');
-const clothing = require('../models/clothing');
 
 //Reusable include array for fetching all product types in one query
 const allProductIncludes = [

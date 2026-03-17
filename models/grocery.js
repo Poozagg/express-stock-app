@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const Grocery = sequelize.define('Grocery', {
-      expiretionDate: {
+      expirationDate: {
         type: DataTypes.DATE
       },
       nutritionalInfo: {

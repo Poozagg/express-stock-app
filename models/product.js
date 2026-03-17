@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Model', powerConsumption: 'Power Consumption',
         dimensions: 'Dimensions', author: 'Author', isbn: 'isbn',
         genre: 'Genre', publicationDate: 'Publication Date', 
-        expiretionDate: 'Expiration Date', nutritionalInfo: 'Nutritional Info', 
+        expirationDate: 'Expiration Date', nutritionalInfo: 'Nutritional Info', 
         organic: 'Organic', ageGroup: 'Age Group', batteryOperated: 'Battery Operated'
       }
 
