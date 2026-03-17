@@ -355,3 +355,36 @@ exports.convertCurrency = async (req, res) => {
   }
 };
 
+// Summary page - shows current stock status overview
+exports.summary = async (req, res) => {
+  try {
+    const products = await Product.findAll({ include: allProductIncludes });
+
+    // Key metrics
+    const totalProducts = products.length;
+    const outOfStock = products.filter(p => p.quantity === 0);
+    const lowStock = products.filter(p => p.quantity > 0 && p.quantity < 10);
+
+    // Breakdown by product type - count, total quantity, and total value per type
+    const typeBreakdown = {};
+    for (const type of Object.keys(typeModelMap)) {
+      const ofType = products.filter(p => p.type === type);
+      typeBreakdown[type] = {
+        count: ofType.length,
+        totalQuantity: ofType.reduce((sum, p) => sum + p.quantity, 0),
+        totalValue: ofType.reduce((sum, p) => sum + (p.pricePerItem * p.quantity), 0)
+      };
+    }
+
+    res.render('summary', {
+      totalProducts,
+      outOfStock,
+      lowStock,
+      typeBreakdown
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error loading summary.");
+  }
+};
+

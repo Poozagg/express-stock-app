@@ -12,6 +12,8 @@ async function prebuildDatabase() {
     const products = await Product.bulkCreate([
       { id: 'CLO001', name: 'T-Shirt', pricePerItem: 19.99, quantity: 100, type: 'clothing' },
       { id: 'CLO002', name: 'Jeans', pricePerItem: 49.99, quantity: 50, type: 'clothing' },
+      { id: 'CLO003', name: 'Shirt', pricePerItem: 15.00, quantity: 0, type: 'clothing' },
+      { id: 'CLO004', name: 'Dress', pricePerItem: 49.99, quantity: 2, type: 'clothing' },
       { id: 'ELE001', name: 'Smartphone', pricePerItem: 599.99, quantity: 30, type: 'electronic' },
       { id: 'ELE002', name: 'Laptop', pricePerItem: 999.99, quantity: 20, type: 'electronic' },
       { id: 'TOY001', name: 'Action Figure', pricePerItem: 14.99, quantity: 200, type: 'toy' },
@@ -19,7 +21,8 @@ async function prebuildDatabase() {
       { id: 'BOOK001', name: 'Novel', pricePerItem: 9.99, quantity: 300, type: 'book' },
       { id: 'BOOK002', name: 'Biography', pricePerItem: 14.99, quantity: 250, type: 'book' },
       { id: 'GROC001', name: 'Organic Apples', pricePerItem: 3.99, quantity: 500, type: 'grocery' },
-      { id: 'GROC002', name: 'Milk', pricePerItem: 2.49, quantity: 400, type: 'grocery' },
+      { id: 'GROC002', name: 'Milk', pricePerItem: 1.49, quantity: 400, type: 'grocery' },
+      { id: 'GROC003', name: 'Bread', pricePerItem: 2.49, quantity: 1, type: 'grocery' },
     ]);
 
     // Create sample clothing items

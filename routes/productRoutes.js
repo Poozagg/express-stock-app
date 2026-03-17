@@ -36,7 +36,8 @@ router.get('/update/:id', stockController.updatePage);
 // POST update a product
 router.post('/update/:id', stockController.update);
 
-//
+// GET summary page
+router.get('/summary', stockController.summary);
 
 module.exports = router;
 

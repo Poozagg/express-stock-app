@@ -40,3 +40,24 @@
     padding: 8px 12px;
     border-radius: 5px;
   }
+
+  .controls-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+  }
+
+  .controls-row form {
+    margin-bottom: 0;
+  }
+
+  .controls-row .form-select-sm,
+  .controls-row .btn-sm {
+    height: 32px;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 32px;
+    font-size: 0.875rem;
+  }

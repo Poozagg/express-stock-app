@@ -1,0 +1,147 @@
+extends pageLayout
+
+block content
+    h1 Stock Summary
+
+    //- Key Metric Cards
+    .summary-cards
+      a.summary-card(href="/")
+        .card-value= totalProducts
+        .card-label Total Products
+
+      a.summary-card(class=lowStock.length > 0 ? 'alert-card' : '' href="#lowStock")
+        .card-value= lowStock.length
+        .card-label Low Stock Items
+
+      a.summary-card(class=outOfStock.length > 0 ? 'danger-card' : '' href="#outOfStock")
+        .card-value= outOfStock.length
+        .card-label Out of Stock
+
+    //- Type Breakdown Chart
+    h2 Breakdown by Type
+    .chart-container
+      canvas#typeBreakdownChart
+
+    script.
+      (function() {
+        const typeData = !{JSON.stringify(typeBreakdown)};
+        const labels = [];
+        const values = [];
+        const quantities = [];
+
+        for (const [type, data] of Object.entries(typeData)) {
+          if (data.count > 0) {
+            labels.push(type.charAt(0).toUpperCase() + type.slice(1));
+            values.push(data.totalValue);
+            quantities.push(data.totalQuantity);
+          }
+        }
+
+        const ctx = document.getElementById('typeBreakdownChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Total Value (GBP)',
+                data: values,
+                backgroundColor: 'rgba(13, 148, 136, 0.7)',
+                borderColor: '#0d9488',
+                borderWidth: 1,
+                yAxisID: 'yValue'
+              },
+              {
+                label: 'Total Quantity',
+                data: quantities,
+                backgroundColor: 'rgba(199, 168, 227, 0.7)',
+                borderColor: '#c7a8e3',
+                borderWidth: 1,
+                yAxisID: 'yQty'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top'
+              }
+            },
+            scales: {
+              yValue: {
+                type: 'linear',
+                position: 'left',
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: 'Total Value (GBP)'
+                },
+                grid: {
+                  color: 'rgba(0, 0, 0, 0.05)'
+                }
+              },
+              yQty: {
+                type: 'linear',
+                position: 'right',
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: 'Quantity'
+                },
+                grid: {
+                  drawOnChartArea: false
+                }
+              },
+              x: {
+                grid: {
+                  display: false
+                }
+              }
+            }
+          }
+        });
+      })();
+
+    //- Low Stock Alerts
+    if lowStock.length > 0
+      h2#lowStock Low Stock Alerts
+      p.summary-description Products with fewer than 10 items remaining
+      table.summary-table
+        thead
+          tr
+            th Name
+            th Type
+            th Quantity
+            th Price (GBP)
+            th
+        tbody
+          each product in lowStock
+            tr
+              td= product.name
+              td= product.type
+              td.low-stock-qty= product.quantity
+              td= product.pricePerItem
+              td
+                a(href=`/details/${product.id}`) View
+
+    //- Out of Stock
+    if outOfStock.length > 0
+      h2#outOfStock Out of Stock
+      p.summary-description Products with zero quantity in stock
+      table.summary-table
+        thead
+          tr
+            th Name
+            th Type
+            th Price (GBP)
+            th
+        tbody
+          each product in outOfStock
+            tr
+              td= product.name
+              td= product.type
+              td= product.pricePerItem
+              td
+                a(href=`/details/${product.id}`) View
