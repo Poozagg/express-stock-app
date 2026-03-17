@@ -51,8 +51,8 @@ async function prebuildDatabase() {
     
      //Create sample groceries items
      await Grocery.bulkCreate([
-      { ProductId: 'GROC001', expiretionDate: '2024-12-31', nutritionalInfo: 'Calories: 200, Fat: 10g, Carbs: 20g, Protein: 5g', organic: true },
-      { ProductId: 'GROC002', expiretionDate: '2024-11-30', nutritionalInfo: 'Calories: 150, Fat: 5g, Carbs: 15g, Protein: 3g', organic: false },
+      { ProductId: 'GROC001', expirationDate: '2024-12-31', nutritionalInfo: 'Calories: 200, Fat: 10g, Carbs: 20g, Protein: 5g', organic: true },
+      { ProductId: 'GROC002', expirationDate: '2024-11-30', nutritionalInfo: 'Calories: 150, Fat: 5g, Carbs: 15g, Protein: 3g', organic: false },
     ]);
 
     console.log('Sample data created successfully.');
